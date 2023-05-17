@@ -35,7 +35,8 @@ Además se espera que la aplicación permita consultas avanzadas que proporcione
 
 - 7. **Despliegue en internet**:--
 
-        TBD
+https://biblioteca-emad.netlify.app/#/
+
 
 ## Interfaz de usuario
   
