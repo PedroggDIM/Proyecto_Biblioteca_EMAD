@@ -41,13 +41,13 @@ export default {
 </script>
 
 <template>
-  <h5>Buscar por Título</h5>  
+  <h5>Buscar por Título.</h5>  
   <input v-model="busquedaTitulo" type="text" placeholder="Buscar por Título (introduzca el Título)" class="form-control mb-3"/>
 
   <div v-for="documento in filtroDeBusqueda" :key="documento.id" class="card m-0 p-0">
     <div class="card-header text-primary">
     
-      <strong>Título: </strong>{{ documento.titulo }}
+      <h6><strong>Título: {{ documento.titulo }}</strong></h6>
     </div>
     <div class="card-body">
       <div class="contenedor d-flex justify-content-end">

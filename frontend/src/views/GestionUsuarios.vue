@@ -14,39 +14,28 @@ export default {
 </script>
 
 
-<template> 
+<template>  
  
-<div class="container" id="user"> 
   <h4>Usuarios de la aplicación</h4>
-  <div class="row">
-    <div class="col-md-12">
-      <table class="table table-striped table-hover table-bordered">
-        <thead>
-          <tr class="table-primary">
-            <th>UserName</th>
-            <th>Nombre</th>
-            <th>Apellidos</th>
-            <th>Extensión</th>
-            <th>Correo</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="usuario of usuarios">
-            <td>{{ usuario.username }}</td>
-            <td>{{ usuario.nombre }}</td>
-            <td>{{ usuario.apellidos }}</td>
-            <td>{{ usuario.telefono }}</td>
-            <td>{{ usuario.correo_electronico }}</td>
-          </tr>
-        </tbody>
-      </table>
+<div class="row">
+  <div class="col-12 col-md-6" v-for="usuario of usuarios" :key="usuario.idUsuario">
+    <div class="card" >
+      <div class="card-body">
+        <h5 class="card-title">Usuario {{ usuario.idUsuario }}</h5>
+        <p class="card-text"><strong>UserName:</strong> {{ usuario.username }}</p>
+        <p class="card-text"><strong>Nombre:</strong> {{ usuario.nombre }}</p>
+        <p class="card-text"><strong>Apellidos:</strong> {{ usuario.apellidos }}</p>
+        <p class="card-text"><strong>Extensión:</strong> {{ usuario.telefono }}</p>
+        <p class="card-text"><strong>Correo:</strong> {{ usuario.correo_electronico }}</p>
+      </div>
     </div>
   </div>
-</div> 
+</div>    
+
 </template>
 
 <style>
- #user { 
-     width: 500px;
+ .card-body { 
+     background-color: #f2f2f2;
   }
 </style>

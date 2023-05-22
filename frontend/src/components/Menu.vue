@@ -46,7 +46,7 @@ const { cambiarNivel } = auth
    Acerca de
    </router-link>        
         </ul>
-        <router-link :to="{ name:'Login' }" class="btn btn-primary">INGRESAR</router-link>       
+        <router-link :to="{ name:'Login' }" class="btn btn-primary">LOGIN</router-link>       
       </div>
     </div>
 </nav>
