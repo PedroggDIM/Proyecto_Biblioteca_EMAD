@@ -1,95 +1,108 @@
 {
   "usuario": [
-      {
-          "username": "juanpg",
-          "nombre": "Juan",
-          "apellidos": "Pérez García",
-          "telefono": "632255",
-          "correo_electronico": "juanpg@example.com"
-      },
-      {
-          "username": "mariagt",
-          "nombre": "María",
-          "apellidos": "González Torres",
-          "telefono": "632255",
-          "correo_electronico": "mariagt@example.com"
-      },
-      {
-          "username": "luishs",
-          "nombre": "Luis",
-          "apellidos": "Hernández Sánchez",
-          "telefono": "365522",
-          "correo_electronico": "luishs@example.com"
-      },
-      {
-          "username": "anaml",
-          "nombre": "Ana",
-          "apellidos": "Martínez López",
-          "telefono": "654488",
-          "correo_electronico": "anaml@example.com"
-      },
-      {
-          "username": "pedrorv",
-          "nombre": "Pedro",
-          "apellidos": "Ramírez Vázquez",
-          "telefono": "632255",
-          "correo_electronico": "pedrorv@example.com"
-      },
-      {
-          "username": "martafj",
-          "nombre": "Marta",
-          "apellidos": "Fernández Jiménez",
-          "telefono": "632255",
-          "correo_electronico": "martafj@example.com"
-      },
-      {
-          "username": "javiergc",
-          "nombre": "Javier",
-          "apellidos": "Gómez Castro",
-          "telefono": "652288",
-          "correo_electronico": "javiergc@example.com"
-      },
-      {
-          "username": "carmenlg",
-          "nombre": "Carmen",
-          "apellidos": "López García",
-          "telefono": "632211",
-          "correo_electronico": "carmenlg@example.com"
-      },
-      {
-          "username": "antoniogp",
-          "nombre": "Antonio",
-          "apellidos": "García Pérez",
-          "telefono": "699933",
-          "correo_electronico": "antoniogp@example.com"
-      },
-      {
-          "username": "luciat",
-          "nombre": "Lucía",
-          "apellidos": "Sánchez Torres",
-          "telefono": "652288",
-          "correo_electronico": "luciat@example.com"
-      },
-      {
-          "username": "davidgg",
-          "nombre": "Davíd",
-          "apellidos": "García García",
-          "telefono": "688855",
-          "correo_electronico": "davidgg@example.com"
-      },
-      {
-          "username": "jongt",
-          "nombre": "Jon",
-          "apellidos": "Gorri Torres",
-          "telefono": "699955",
-          "correo_electronico": "jongt@example.com"
-      },
-      {
-          "username": "santiagog",
-          "nombre": "Santiago",
-          "apellidos": "Gil Giles",
-          "telefono": "666522",
-          "correo_electronico": "santiagog@example.com"
-      } ]
-}     
-
+        {
+            "idUsuario": 1,
+            "username": "juanpg",
+            "nombre": "Juan",
+            "apellidos": "Pérez García",
+            "telefono": "632255",
+            "correo_electronico": "juanpg@example.com"
+        },
+        {
+            "idUsuario": 2,
+            "username": "mariagt",
+            "nombre": "María",
+            "apellidos": "González Torres",
+            "telefono": "632255",
+            "correo_electronico": "mariagt@example.com"
+        },
+        {
+            "idUsuario": 3,
+            "username": "luishs",
+            "nombre": "Luis",
+            "apellidos": "Hernández Sánchez",
+            "telefono": "365522",
+            "correo_electronico": "luishs@example.com"
+        },
+        {
+            "idUsuario": 4,
+            "username": "anaml",
+            "nombre": "Ana",
+            "apellidos": "Martínez López",
+            "telefono": "654488",
+            "correo_electronico": "anaml@example.com"
+        },
+        {
+            "idUsuario": 5,
+            "username": "pedrorv",
+            "nombre": "Pedro",
+            "apellidos": "Ramírez Vázquez",
+            "telefono": "632255",
+            "correo_electronico": "pedrorv@example.com"
+        },
+        {
+            "idUsuario": 6,
+            "username": "martafj",
+            "nombre": "Marta",
+            "apellidos": "Fernández Jiménez",
+            "telefono": "632255",
+            "correo_electronico": "martafj@example.com"
+        },
+        {
+            "idUsuario": 7,
+            "username": "javiergc",
+            "nombre": "Javier",
+            "apellidos": "Gómez Castro",
+            "telefono": "652288",
+            "correo_electronico": "javiergc@example.com"
+        },
+        {
+            "idUsuario": 8,
+            "username": "carmenlg",
+            "nombre": "Carmen",
+            "apellidos": "López García",
+            "telefono": "632211",
+            "correo_electronico": "carmenlg@example.com"
+        },
+        {
+            "idUsuario": 9,
+            "username": "antoniogp",
+            "nombre": "Antonio",
+            "apellidos": "García Pérez",
+            "telefono": "699933",
+            "correo_electronico": "antoniogp@example.com"
+        },
+        {
+            "idUsuario": 10,
+            "username": "luciat",
+            "nombre": "Lucía",
+            "apellidos": "Sánchez Torres",
+            "telefono": "652288",
+            "correo_electronico": "luciat@example.com"
+        },
+        {
+            "idUsuario": 11,
+            "username": "davidgg",
+            "nombre": "Davíd",
+            "apellidos": "García García",
+            "telefono": "688855",
+            "correo_electronico": "davidgg@example.com"
+        },
+        {
+            "idUsuario": 12,
+            "username": "jongt",
+            "nombre": "Jon",
+            "apellidos": "Gorri Torres",
+            "telefono": "699955",
+            "correo_electronico": "jongt@example.com"
+        },
+        {
+            "idUsuario": 13,
+            "username": "santiagog",
+            "nombre": "Santiago",
+            "apellidos": "Gil Giles",
+            "telefono": "666522",
+            "correo_electronico": "santiagog@example.com"
+        }
+    ]
+}

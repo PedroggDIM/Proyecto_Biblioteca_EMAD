@@ -1,6 +1,6 @@
 import axios from 'axios'
-
-const host = 'https://apirestbiblioemad-pedroggsegosego.b4a.run/api';
+// api producción
+const host = 'https://proyectobibliotecaemad-pedroggsegosego.b4a.run/api';
 
 export function llamadaApi(path, method, body) {
   let config = {
