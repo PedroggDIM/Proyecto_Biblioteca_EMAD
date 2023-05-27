@@ -13,6 +13,7 @@
     "axios": "^1.3.5",
     "bootstrap": "^5.2.3",
     "datatables.net-select": "^1.6.2",
+    "moment": "^2.29.4",
     "pinia": "^2.0.34",
     "primeicons": "^6.0.1",
     "primevue": "^3.29.1",

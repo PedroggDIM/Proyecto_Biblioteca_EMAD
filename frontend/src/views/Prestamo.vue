@@ -2,6 +2,7 @@
 import { mapActions, mapState } from "pinia";
 import axios from "axios";
 import { prestamosStore } from "@/stores/prestamos.js";
+import moment from 'moment';
 
 export default {
   props: ["prestamo"],
@@ -37,7 +38,10 @@ export default {
     editarPrestamo(prestamo){
       debugger;
       this.$emit('editarPrestamo', prestamo)
-    }
+    },
+    formatDate(date) {
+      return moment(date).format('YYYY/MM/DD');
+    },
   },
 };
 </script>
@@ -57,8 +61,8 @@ export default {
         <p class="mb-0"><strong>Id Usuario: </strong>{{ prestamo.idUsuario }}</p>  
              <!-- <p class="mb-0"><strong>Titulo: </strong>{{ prestamo.documento ? prestamo.documento.titulo : '' }}</p> -->
         <p class="mb-0"><strong>Título: </strong>{{ prestamo.documento.titulo}}</p>
-        <p class="mb-0"><strong>Fecha Inicio Préstamo: </strong>{{ prestamo.fechaInicio }}</p> 
-        <p class="mb-0"><strong>Fecha Fin Préstamo: </strong>{{ prestamo.fechaFin }}</p>   
+        <p class="mb-0"><strong>Fecha Inicio Préstamo: </strong>{{ formatDate(prestamo.fechaInicio)}}</p> 
+        <p class="mb-0"><strong>Fecha Fin Préstamo: </strong>{{ formatDate(prestamo.fechaFin) }}</p>   
       </div>
     </div> 
 
