@@ -111,6 +111,11 @@ export default {
             <label for="check-2" class="form-check-label">Disponible No</label>
           </div>
         </div>
+        <div class="form-radio form-radio-inline">
+          <label for="check-1" class="form-check-label">Copias disponibles</label>
+          <input type="number" placeholder="Introduzca copias disponibles" class="form-control"
+          v-model.number="documento.numCopias">
+        </div>
 
         <div class="my-2">
           <p class="margeninput">Seleccione el tipo de documento</p>

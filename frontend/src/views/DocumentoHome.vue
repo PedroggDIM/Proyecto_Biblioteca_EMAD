@@ -73,7 +73,8 @@ export default {
         <p class="mb-0"><strong>Sinopsis: </strong>{{ documento.sinopsis }}</p>
         <p class="mb-0"><strong>Estantería: </strong>{{ documento.estanteria }}</p>
         <p class="mb-0"><strong>Fecha alta: </strong>{{ documento.fechaAlta }}</p>
-          <p class="mb-0"><strong>Disponible: </strong>{{ documento.disponible ? 'Disponible' : 'No disponible' }}</p>
+        <p class="mb-0"><strong>Disponible: </strong>{{ documento.disponible ? 'Disponible' : 'No disponible' }}</p>
+        <p class="mb-0"><strong>Copias disponibles: </strong>{{ documento.numCopias }}</p>
         <p class="mb-0"><strong>Categoría: </strong>{{ documento.categoria }}</p>     
         <div v-if="documento.categoria === 'escrito'">
           <p class="mb-0"><strong>ISBN: </strong>{{ documento.isbn }}</p>
