@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import es.mdef.proyecto_biblioteca_emad.ProyectoBibliotecaEmadApplication;
 import es.mdef.proyecto_biblioteca_emad.entidades.Prestamo;
 import es.mdef.proyecto_biblioteca_emad.repositorios.PrestamoRepositorio;
+import es.mdef.proyecto_biblioteca_emad.entidades.Documento;
+import es.mdef.proyecto_biblioteca_emad.repositorios.DocumentoRepositorio;
 
 //para el despliegue
 //@CrossOrigin(origins = "*")
@@ -25,13 +27,15 @@ import es.mdef.proyecto_biblioteca_emad.repositorios.PrestamoRepositorio;
 @RestController
 @RequestMapping("/prestamos")
 public class PrestamoController {
+	private final DocumentoRepositorio docRepositorio;
 	private final PrestamoRepositorio repositorio;
 	private final PrestamoAssembler assembler;
 	private final PrestamoListaAssembler listaAssembler;
 	private final Logger log;
 
-	PrestamoController(PrestamoRepositorio repositorio, PrestamoAssembler assembler,		
-			PrestamoListaAssembler listaAssembler) {
+	PrestamoController(DocumentoRepositorio docRepositorio, PrestamoRepositorio repositorio,
+			PrestamoAssembler assembler, PrestamoListaAssembler listaAssembler) {
+		this.docRepositorio = docRepositorio;
 		this.repositorio = repositorio;
 		this.assembler = assembler;
 		this.listaAssembler = listaAssembler;
@@ -54,9 +58,29 @@ public class PrestamoController {
 	@PostMapping
 	public PrestamoModel add(@RequestBody PrestamoModel model) {
 		System.out.println(model);
-		Prestamo prestamo = repositorio.save(assembler.toEntity(model));
-		log.info("Añadido " + prestamo);
-		return assembler.toModel(prestamo);
+
+		Prestamo newPrestamo = null;
+		String message;
+		Prestamo prestamo = assembler.toEntity(model);
+		Documento doc = prestamo.getDocumento();
+		int copias = doc.getNumCopias();
+		if (copias > 0) {
+			copias--;
+			doc.setNumCopias(copias);
+			if (copias == 0) {
+				doc.setDisponible(false);
+			}
+			docRepositorio.save(doc);
+
+			newPrestamo = repositorio.save(prestamo);
+			message = "A�adido " + newPrestamo.toString();
+		} else {
+			newPrestamo = null;
+			message = "El documento " + doc.getId() + " no se puede prestar porque no hay copias disponibles";
+		}
+
+		log.info(message);
+		return assembler.toModel(newPrestamo);
 	}
 
 	@PutMapping("{id}")

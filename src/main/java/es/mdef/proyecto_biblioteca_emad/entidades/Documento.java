@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import io.micrometer.common.lang.Nullable;
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.DiscriminatorValue;
@@ -34,6 +36,10 @@ public class Documento {
 	private int estanteria;
 	private Date fechaAlta;
 	private boolean disponible;
+	
+	@Column(nullable = true)
+	private int numCopias;
+	
 	
 	public static enum Categoria {
 		escrito, audiovisual
@@ -113,6 +119,14 @@ public class Documento {
 
 	public void setDisponible(boolean disponible) {
 		this.disponible = disponible;
+	}
+	
+	public int getNumCopias() {
+		return numCopias;
+	}
+	
+	public void setNumCopias(int numCopias) {
+		this.numCopias = numCopias;
 	}	
 
 }

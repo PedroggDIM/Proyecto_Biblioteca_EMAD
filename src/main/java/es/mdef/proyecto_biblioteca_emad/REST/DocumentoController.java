@@ -82,6 +82,7 @@ public class DocumentoController {
 
 			if (model.getCategoria() == Categoria.escrito) {
 				Escrito escrito = new Escrito();
+				escrito.setNumCopias(model.getNumCopias());
 				escrito.setTitulo(model.getTitulo());
 				escrito.setAutor(model.getAutor());
 				escrito.setEstanteria(model.getEstanteria());
@@ -94,6 +95,7 @@ public class DocumentoController {
 				doc = escrito;
 			} else if (model.getCategoria() == Categoria.audiovisual) {
 				Audiovisual audiovisual = new Audiovisual();
+				audiovisual.setNumCopias(model.getNumCopias());
 				audiovisual.setTitulo(model.getTitulo());
 				audiovisual.setAutor(model.getAutor());
 				audiovisual.setEstanteria(model.getEstanteria());

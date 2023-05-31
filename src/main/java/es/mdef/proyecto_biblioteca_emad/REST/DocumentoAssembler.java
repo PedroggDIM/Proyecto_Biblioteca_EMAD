@@ -16,7 +16,8 @@ public class DocumentoAssembler implements RepresentationModelAssembler<Document
 	@Override
 	public DocumentoModel toModel(Documento entity) {
 		DocumentoModel model = new DocumentoModel();
-	
+	    
+		model.setNumCopias(entity.getNumCopias());
 		model.setTitulo(entity.getTitulo());
 		model.setAutor(entity.getAutor());
 		model.setSinopsis(entity.getSinopsis());
@@ -52,6 +53,7 @@ public class DocumentoAssembler implements RepresentationModelAssembler<Document
 			audiovisual.setTipo(model.getTipo());
 			documento = audiovisual;
 		}
+		documento.setNumCopias(model.getNumCopias());
 		documento.setTitulo(model.getTitulo());
 		documento.setAutor(model.getAutor());
 		documento.setSinopsis(model.getSinopsis());

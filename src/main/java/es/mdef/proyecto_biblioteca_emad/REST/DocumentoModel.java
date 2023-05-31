@@ -16,7 +16,14 @@ public class DocumentoModel extends RepresentationModel<DocumentoModel>{
 	private int estanteria;
 	private Date fechaAlta;
 	private boolean disponible;
+	private int numCopias;
 	
+	public int getNumCopias() {
+		return numCopias;
+	}
+	public void setNumCopias(int numCopias) {
+		this.numCopias = numCopias;
+	}
 	private Categoria categoria;
 	//atributos de categoria escrito
     private int ISBN;

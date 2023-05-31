@@ -26,6 +26,7 @@ public class DocumentoListaAssembler implements RepresentationModelAssembler<Doc
 		model.setEstanteria(entity.getEstanteria());
 		model.setFechaAlta(entity.getFechaAlta());
 		model.setDisponible(entity.isDisponible());
+		model.setNumCopias(entity.getNumCopias());
 		model.setCategoria(entity.getCategoria());
 		if (entity.getCategoria() == Categoria.escrito) {
 			model.setISBN(((Escrito) entity).getISBN());
