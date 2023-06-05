@@ -16,6 +16,11 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="PRESTAMOS")
 public class Prestamo {
+	public static final String ID = "id";
+	public static final String DOCUMENTO = "documento";
+	public static final String FECHA_INICIO = "fechaInicio";
+	public static final String FECHA_FIN = "fechaFin";
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@JsonIgnore	

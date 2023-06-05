@@ -1,7 +1,7 @@
 import axios from 'axios';
 import usuariosJson from '@/assets/usuarios.json'
-//api producción
-const host = 'https://proyectobibliotecaemad-pedroggsegosego.b4a.run/api'
+
+const host = 'https://apirestbiblioemad-pedroggsegosego.b4a.run/api';
 
 export function llamadaApi(path, method, body) {
   debugger;
@@ -74,6 +74,16 @@ export function convertDate(date) {
 export function getEntidades(nombre) {
   return llamadaApi(`${host}/${nombre}`, 'get')
 }
+
 export function getPrestamos() {
   return getEntidades('prestamos')
+}
+
+export function getDocumentosMasPrestados(fechaIni, fechaFin, n) {
+  const fechaInicioStr = convertDate(fechaIni);
+  const fechaFinStr = convertDate(fechaFin);
+
+  debugger;
+  return llamadaApi(`${host}/personalizado/ndocumentosmasprestado`, 'post',
+    { fechaInicio: fechaInicioStr, fechaFin: fechaFinStr, n: n });
 }

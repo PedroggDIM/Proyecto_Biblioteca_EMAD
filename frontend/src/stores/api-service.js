@@ -1,6 +1,6 @@
 import axios from 'axios'
-// api producción
-const host = 'https://proyectobibliotecaemad-pedroggsegosego.b4a.run/api';
+
+const host = 'https://apirestbiblioemad-pedroggsegosego.b4a.run/api';
 
 export function llamadaApi(path, method, body) {
   let config = {
@@ -24,6 +24,7 @@ export function guardarDocumento(documento) {
     return llamadaApi(`${host}/documentos`, 'post', documento);
   }
 }
+
 export function borrarDocumento(documento) {
   debugger;
   return llamadaApi(`${host}/documentos/${documento.id}`, 'delete') // con la api poner la url tipo: (documento._links.self.href.replace('http', 'https'), 'delete')
