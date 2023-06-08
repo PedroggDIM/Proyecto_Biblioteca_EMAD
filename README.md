@@ -12,7 +12,7 @@ Para ello la aplicación permitirá:
 
 ## Diagrama de clases de diseño
 
-![Diagrama_de_Diseño](https://git.institutomilitar.com/Fluqueta/proyecto_biblioteca_emad/-/wikis/uploads/a161639bd4128b385a0fd6f16930fbe5/EsquemaBiblioteca_EMAD.jpg)
+https://git.institutomilitar.com/Fluqueta/proyecto_biblioteca_emad/-/wikis/Diagramas#diagrama-de-clases
 
 **Cumplimiento de requisitos**
 - 1. **Herencia**: Se realizará sobre `Documento` y sus subtipos: `Escrito`, `Audiovisual`.
@@ -27,7 +27,7 @@ Para ello la aplicación permitirá:
 
       Libería: https://git.institutomilitar.com/Fluqueta/proyecto_biblioteca_emad/-/wikis/home
 
-- 7. **Despliegue en internet**:--
+- 8. **Despliegue en internet**:--
 
 https://biblioteca-emad.netlify.app/#/
 
