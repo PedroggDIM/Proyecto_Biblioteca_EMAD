@@ -31,8 +31,9 @@ Para ello la aplicación permitirá:
 
 https://biblioteca-emad.netlify.app/#/
 
+- 7. **Libreria externa**:--
 
-## Interfaz de usuario
-  
-![Enlace a la página de Interfaces](https://git.institutomilitar.com/Fluqueta/proyecto_biblioteca_emad/-/wikis/Interfaces-del-Proyecto)
+https://github.com/PedroggDIM/libreriaEMAD
+
+
 
