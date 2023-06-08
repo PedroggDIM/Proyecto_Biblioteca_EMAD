@@ -31,7 +31,7 @@ https://git.institutomilitar.com/Fluqueta/proyecto_biblioteca_emad/-/wikis/Diagr
 
 https://biblioteca-emad.netlify.app/#/
 
-- 7. **Libreria externa**:--
+- 8. **Libreria externa**:--
 
 https://github.com/PedroggDIM/libreriaEMAD
 
