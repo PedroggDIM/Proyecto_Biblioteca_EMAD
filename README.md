@@ -27,7 +27,7 @@ https://git.institutomilitar.com/Fluqueta/proyecto_biblioteca_emad/-/wikis/Diagr
 
       Libería: https://git.institutomilitar.com/Fluqueta/proyecto_biblioteca_emad/-/wikis/home
 
-- 8. **Despliegue en internet**:--
+- 7. **Despliegue en internet Netlify**:--
 
 https://biblioteca-emad.netlify.app/#/
 
