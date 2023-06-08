@@ -10,6 +10,10 @@ sourceCompatibility = '17'
 
 repositories {
 	mavenCentral()
+	
+	//necesario para incorporar libreria de github
+	maven { url 'https://jitpack.io' }
+	
 }
 
 dependencies {
@@ -23,6 +27,9 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	
+	// libreria externa
+	implementation 'com.github.PedroggDIM:libreriaEMAD:84014e4'
 }
 
 tasks.named('test') {
