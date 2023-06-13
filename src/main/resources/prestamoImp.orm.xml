@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm
+                                     http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd"
+                 version="2.2">
+
+    <mapped-superclass class="es.mdef.proyecto_biblioteca_emad_libreria.PrestamoImp" access="FIELD">
+        <attributes> 
+            <basic name="idUsuario" optional="false" />
+			<basic name="fechaInicio" optional="false" />
+			<basic name="fechaFin" optional="false" />
+			
+			<many-to-one name="documento" fetch="EAGER" optional="true" target-entity="es.mdef.gestionbiblioteca.entidades.DocumentoConId">
+            	<join-column name="idDocumento" referenced-column-name="id" nullable="true" />
+            </many-to-one>
+					
+        </attributes>
+     </mapped-superclass>
+
+	<entity class="es.mdef.gestionbiblioteca.entidades.Prestamo" access="FIELD">
+		<table name="PRESTAMOS"/>
+		
+        <attributes> 
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+        </attributes>
+     </entity>
+	
+
+</entity-mappings>

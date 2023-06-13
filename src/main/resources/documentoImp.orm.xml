@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm
+                                     http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd"
+                 version="2.2">
+
+    <mapped-superclass class="es.mdef.proyecto_biblioteca_emad_libreria.DocumentoImp" access="FIELD">
+        <attributes> 
+            <basic name="titulo" optional="false" />
+			<basic name="autor" optional="false" />
+			<basic name="sinopsis" optional="false" />
+			<basic name="numCopias" optional="false" />
+			<basic name="estanteria" optional="false" />
+			<basic name="fechaAlta" optional="false" />
+			<basic name="disponible" optional="false" />		
+			<!-- <basic name="categoria" optional="false"/>-->		
+            
+            <one-to-many 
+                  name="prestamos"
+                  mapped-by="documento" 
+                  target-entity="es.mdef.gestionbiblioteca.entidades.Prestamo" />
+			
+        </attributes>
+     </mapped-superclass>
+
+	<entity class="es.mdef.gestionbiblioteca.entidades.DocumentoConId" access="FIELD">
+		<table name="DOCUMENTOS"/>
+		<inheritance strategy="SINGLE_TABLE"/>
+		<discriminator-value>null</discriminator-value>
+		<!--  <discriminator-column name="tipo_categoria" discriminator-type="STRING" />-->
+		<discriminator-column name="categoria" discriminator-type="STRING" />
+        <attributes> 
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+        </attributes>
+     </entity>
+	
+
+</entity-mappings>

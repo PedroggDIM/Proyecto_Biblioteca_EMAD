@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm
+                                     http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd"
+                 version="2.2">
+
+	<entity class="es.mdef.gestionbiblioteca.entidades.Escrito" access="FIELD">
+		<!-- <discriminator-value>E</discriminator-value> -->
+		<discriminator-value>escrito</discriminator-value>
+        <attributes> 
+             <basic name="ISBN" optional="false" />
+             <basic name="numpaginas" optional="false" />
+             <basic name="tamano" optional="false" />
+        </attributes>
+     </entity>
+	
+
+</entity-mappings>
