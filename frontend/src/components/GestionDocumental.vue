@@ -61,9 +61,15 @@ export default {
       this.documento.categoria = [];
       this.documento._links = null;
     },
-
+    
+    formatearFecha(documento) {          
+      let arr = documento.fechaAlta.split('T')[0];
+      let dataf = arr.split('-');
+      documento.fechaAlta = new Date(parseInt(dataf[0]), parseInt(dataf[1]) - 1, parseInt(dataf[2]));
+    },
     fGuardarDocumento(documento) {
       this.guardarDocumento(documento).then((r) => {
+        this.formatearFecha(r.data);
         this.incluirNuevoDocumento(r.data);
         this.limpiarDocumento();
         this.$refs.inputDocumentalRef.limpiarDocumento();

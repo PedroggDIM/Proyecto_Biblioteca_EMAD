@@ -1,7 +1,7 @@
 import axios from 'axios';
 import usuariosJson from '@/assets/usuarios.json'
 
-const host = 'https://proyectobibliotecaemad-pedroggsegosego.b4a.run/';
+const host = 'https://proyectobibliotecaemad-pedroggsegosego.b4a.run/api';
 
 export function cambiarHttpPorHttps(enlace) {
   return enlace.replace('http', 'https')
