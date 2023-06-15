@@ -19,19 +19,12 @@ https://git.institutomilitar.com/Fluqueta/proyecto_biblioteca_emad/-/wikis/Diagr
 - 2. **Relación One-To-Many**: Relación entre `Prestamo` y `Documento`.`Un solo documento puede tener varios préstamos.
 - 3. **Método personalizado**: Obtener los documentos más utilizados entre dos fechas determinadas con le objetivo de adquirir nuevas copias.
 - 4. **Listado**: Se mostrará listados de documentos con filtro por título y autor y de préstamos pudiendose filtrar por título del documento.
-- 5. **CRUD**: Se usarán los controles adecuados y formularios adecuados. 
-
-- 6. **URLs del proyecto**:--
-
-      Repositorio proyecto: https://git.institutomilitar.com/Fluqueta/proyecto_biblioteca_emad
-
-- 7. **Despliegue en internet Netlify**:--
-
-https://biblioteca-emad.netlify.app/#/
-
-- 8. **Libreria externa**:--
-
-https://github.com/PedroggDIM/libreriaEMAD
-
+- 5. **CRUD**: Se usarán los controles adecuados y formularios adecuados.   
+- 6. **URLs** del proyecto:  
+ Repositorio proyecto: https://git.institutomilitar.com/Fluqueta/proyecto_biblioteca_emad  
+ Librería: https://github.com/PedroggDIM/libreriaEMAD
+- 7. **Despliegue** en Internet:  
+ API: https://proyectobibliotecaemad-pedroggsegosego.b4a.run/api  
+ Web: https://biblioteca-emad.netlify.app/#/
 
 
