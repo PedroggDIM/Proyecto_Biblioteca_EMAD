@@ -1,38 +1,62 @@
 import axios from 'axios'
 
-const host = 'https://apirestbiblioemad-pedroggsegosego.b4a.run/api';
+const host = 'https://proyectobibliotecaemad-pedroggsegosego.b4a.run/';
+
+export function cambiarHttpPorHttps(enlace) {
+  return enlace.replace('http', 'https')
+}
 
 export function llamadaApi(path, method, body) {
   let config = {
-    method: method,    
+    method: method,
     maxBodyLength: Infinity,
     url: path,
     headers: {}
   }
-  if(body) {
+  if (body) {
     config.data = body,
-    config.headers['Content-Type'] = 'application/json'
+      config.headers['Content-Type'] = 'application/json'
   }
-return axios.request(config)
+  return axios.request(config)
 }
 
 export function guardarDocumento(documento) {
-  debugger;
-  if(documento.id){
-    return llamadaApi(`${host}/documentos/${documento.id}`, 'put', documento);
-  }else{
-    return llamadaApi(`${host}/documentos`, 'post', documento);
-  }
+
+  documento.fechaAlta = convierteFecha(documento.fechaAlta);
+  
+  const url = documento._links ? cambiarHttpPorHttps(documento._links.self.href) : `${host}/documentos`;
+  const method = documento._links ? 'put' : 'post';
+
+  return llamadaApi(url, method, documento);
 }
 
 export function borrarDocumento(documento) {
-  debugger;
-  return llamadaApi(`${host}/documentos/${documento.id}`, 'delete') // con la api poner la url tipo: (documento._links.self.href.replace('http', 'https'), 'delete')
+  return llamadaApi(cambiarHttpPorHttps(documento._links.self.href), 'delete') // con la api poner la url tipo: (documento._links.self.href.replace('http', 'https'), 'delete')
 }
 
 export function getEntidades(nombre) {
-  return llamadaApi(`${host}/${nombre}`,'get');
+  return llamadaApi(`${host}/${nombre}`, 'get');
 }
 export function getDocumentos() {
   return getEntidades('documentos');
+}
+
+export function convierteFecha(date) {
+  let diaFecha
+  let dia = date.getDate();
+  if (dia < 10) {
+    diaFecha = '0' + dia;
+  } else {
+    diaFecha = dia.toString();
+  }
+
+  let mesFecha
+  let mes = date.getMonth() + 1;
+  if (mes < 10) {
+    mesFecha = '0' + mes;
+  } else {
+    mesFecha = mes.toString();
+  }
+
+  return date.getFullYear() + '-' + mesFecha + '-' + diaFecha+'T00:00:00.00+00:00';
 }

@@ -1,10 +1,14 @@
 import axios from 'axios';
 import usuariosJson from '@/assets/usuarios.json'
 
-const host = 'https://apirestbiblioemad-pedroggsegosego.b4a.run/api';
+const host = 'https://proyectobibliotecaemad-pedroggsegosego.b4a.run/';
+
+export function cambiarHttpPorHttps(enlace) {
+  return enlace.replace('http', 'https')
+}
 
 export function llamadaApi(path, method, body) {
-  debugger;
+
   let config = {
     method: method,
     maxBodyLength: Infinity,
@@ -30,7 +34,7 @@ export function guardarPrestamo(prestamo) {
     }
   });
 
-  debugger;
+
   let data = {};
   if (userId !== -1) {
     data['idUsuario'] = userId;
@@ -38,36 +42,38 @@ export function guardarPrestamo(prestamo) {
     data['idUsuario'] = null;
   }
 
-  if (prestamo.id) {
+  if (prestamo._links) {
     method = 'put';
-    url += '/' + prestamo.id;
+    url = cambiarHttpPorHttps(prestamo._links.self.href);
   }
 
-  data['fechaInicio'] = convertDate(prestamo.fechaInicio);
-  data['fechaFin'] = convertDate(prestamo.fechaFin);
-  data['documento'] = prestamo.idDocumento;
+  data['fechaInicio'] = convierteFecha(prestamo.fechaInicio);
+  data['fechaFin'] = convierteFecha(prestamo.fechaFin);
+  data['_links'] = {};
+  data['_links']['documento']={};
+  data['_links']['documento']['href'] = cambiarHttpPorHttps(prestamo.documento._links.self.href);
 
   return llamadaApi(url, method, data);
 }
 
-export function convertDate(date) {
-  let dayStr
-  let day = date.getDate();
-  if (day < 10) {
-    dayStr = '0' + day;
+export function convierteFecha(date) {
+  let diaFecha
+  let dia = date.getDate();
+  if (dia < 10) {
+    diaFecha = '0' + dia;
   } else {
-    dayStr = day.toString();
+    diaFecha = dia.toString();
   }
 
-  let monthStr
-  let month = date.getMonth();
-  if (month < 10) {
-    monthStr = '0' + month;
+  let mesFecha
+  let mes = date.getMonth() + 1;
+  if (mes < 10) {
+    mesFecha = '0' + mes;
   } else {
-    monthStr = month.toString();
+    mesFecha = mes.toString();
   }
 
-  return date.getFullYear() + '-' + monthStr + '-' + dayStr;
+  return date.getFullYear() + '-' + mesFecha + '-' + diaFecha+'T00:00:00.00+00:00';
 }
 
 
@@ -80,10 +86,11 @@ export function getPrestamos() {
 }
 
 export function getDocumentosMasPrestados(fechaIni, fechaFin, n) {
-  const fechaInicioStr = convertDate(fechaIni);
-  const fechaFinStr = convertDate(fechaFin);
+  const fechaInicioStr = convierteFecha(fechaIni);
+  const fechaFinStr = convierteFecha(fechaFin);
 
-  debugger;
+
+  
   return llamadaApi(`${host}/personalizado/ndocumentosmasprestado`, 'post',
-    { fechaInicio: fechaInicioStr, fechaFin: fechaFinStr, n: n });
+    { fechaInicio: fechaInicioStr, fechaFin: fechaFinStr, numeroDeDocumentos: n });
 }

@@ -6,37 +6,51 @@ export const prestamosStore = defineStore('prestamos', {
     prestamos: []
   }),
   actions: {
-    async getPrestamos() {
-      await getPrestamos().then(r =>{
-        debugger;
-        this.prestamos = r.data._embedded.prestamoModels;
-
+    getPrestamos() {      
+      getPrestamos().then(r => {        
+        this.prestamos = r.data._embedded.prestamoModels;        
         this.prestamos.forEach(prestamo => {
-          debugger;
-
-          // 2020-01-26T00:00:00.000+00:00"
-          let arr = prestamo.fechaFin.split('T')[0];
-          let dataf = arr.split('-');
-          prestamo.fechaFin = new Date(parseInt(dataf[0]) ,parseInt(dataf[1]) , parseInt(dataf[2]));
-
-          arr = prestamo.fechaInicio.split('T')[0];
-          dataf = arr.split('-');
-          prestamo.fechaInicio = new Date(parseInt(dataf[0]) ,parseInt(dataf[1]) , parseInt(dataf[2]));
-          debugger;
+          this.formatearFecha(prestamo);
         });
       });
     },
 
+    formatearFecha(prestamo) {      
+      let arr = prestamo.fechaFin.split('T')[0];
+      let dataf = arr.split('-');
+      prestamo.fechaFin = new Date(parseInt(dataf[0]), parseInt(dataf[1]) - 1, parseInt(dataf[2]));
+      
+      arr = prestamo.fechaInicio.split('T')[0];
+      dataf = arr.split('-');
+      prestamo.fechaInicio = new Date(parseInt(dataf[0]), parseInt(dataf[1]) -1, parseInt(dataf[2]));
+    },
 
+    
     getPrestamosPorId(id) {
       return this.prestamos.find(p => p.id == id)
     },
-    guardarPrestamo(prestamo) {
-      debugger;
-      if (prestamo.idDocumento != null || prestamo.idDocumento !== '') {
+
+    incluirPrestamo(prestamo) {      
+      this.formatearFecha(prestamo);
+
+      let pos = -1;
+      for (let i = 0; i < this.prestamos.length && pos == -1; i++) {
+        const prestamoAux = this.prestamos[i];
+        if (prestamoAux.id === prestamo.id) {
+          pos = i;
+        }
+      }      
+      if (pos !== -1) {
+        const prestamoModificado = this.prestamos[pos];
+        
+        prestamoModificado.fechaInicio = prestamo.fechaInicio;
+        prestamoModificado.fechaFin = prestamo.fechaFin;
+      } else {
         this.prestamos.push(prestamo);
       }
-      debugger;
+    },
+
+    guardarPrestamo(prestamo) {
       return guardarPrestamo(prestamo);
     },
 

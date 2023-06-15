@@ -2,14 +2,7 @@ import { createApp } from "vue";
 import "./style.css";
 import App from "./App.vue";
 // router
-import Home from "@/views/Home.vue";
-import GestionPrestamos from "@/views/GestionPrestamos.vue";
-import GestionUsuarios from "@/views/GestionUsuarios.vue";
-import GestionDocumental from "@/views/GestionDocumental.vue";
-import Estadistica from "@/views/Estadistica.vue";
-import Acercade from "@/views/Acercade.vue";
-import Login from "@/views/Login.vue";
-import NotFound from "@/views/NotFound.vue";
+import Home from "@/components/Home.vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { createPinia } from 'pinia'
 //primevue
@@ -17,12 +10,15 @@ import 'primevue/resources/themes/saga-blue/theme.css'  //theme
 import 'primevue/resources/primevue.min.css'            //core css
 import 'primeicons/primeicons.css'                      //icons
 import PrimeVue from 'primevue/config'
-
-// Import our custom CSS // bootstrap 5
+// CSS // bootstrap 5
 import "@/scss/styles.scss";
-//import '../scss/styles.scss'
-// Import all of Bootstrap's JS
 import * as bootstrap from "bootstrap";
+const GestionPrestamos = () => import('@/components/GestionPrestamos.vue')
+const GestionUsuarios = () => import('@/components/GestionUsuarios.vue')
+const GestionDocumental = () => import('@/components/GestionDocumental.vue')
+const Estadistica = () => import('@/components/Estadistica.vue')
+const Login = () => import('@/components/Login.vue')
+const NotFound = () => import('@/components/NotFound.vue')
 
 // router
 const routes = [
@@ -31,7 +27,6 @@ const routes = [
   { path: "/gestionUsuarios", component: GestionUsuarios, name:'gestionUsuarios' },
   { path: "/gestionDocumental", component: GestionDocumental, name:'gestionDocumental' },
   { path: "/estadistica", component: Estadistica, name:'estadistica' },
-  { path: "/acercade", component: Acercade, name:'acercade' },
   { path: "/Login", component: Login, name:'Login' },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
 ];
@@ -54,6 +49,6 @@ app.use(pinia)
 app.use(router);
 app.use(PrimeVue)
 
-//app.component('font-awesome-icon', FontAwesomeIcon)
+
 app.mount("#app");
-//createApp(App).component('font-awesome-icon', FontAwesomeIcon).use(router).mount('#app')
+

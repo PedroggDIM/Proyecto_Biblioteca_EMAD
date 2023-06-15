@@ -23,7 +23,7 @@ public class PrestamoRepositorioMetPersonalizadoImpl implements PrestamoReposito
 	private EntityManager entityManager;
 	
 	@Override
-	public List<PrestamoAgrupadoPorDocumento> prestamoGroupByDocumento(Specification<Prestamo> miEspecificacion, int maximoRerultado) {
+	public List<PrestamoAgrupadoPorDocumento> prestamoGroupByDocumento(Specification<Prestamo> miEspecificacion, int maximoResultado) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<PrestamoAgrupadoPorDocumento> query = criteriaBuilder.createQuery(PrestamoAgrupadoPorDocumento.class);
 		Root<Prestamo> root = query.from(Prestamo.class);
@@ -38,7 +38,7 @@ public class PrestamoRepositorioMetPersonalizadoImpl implements PrestamoReposito
 		query.orderBy(criteriaBuilder.desc(cuentaDocumento));
 
 		TypedQuery<PrestamoAgrupadoPorDocumento> ejecutaQuery = entityManager.createQuery(query);
-		ejecutaQuery.setMaxResults(maximoRerultado);
+		ejecutaQuery.setMaxResults(maximoResultado);
 		List<PrestamoAgrupadoPorDocumento> lstPrestamoGroupByDocumento = ejecutaQuery.getResultList();
 
 		return lstPrestamoGroupByDocumento;

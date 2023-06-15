@@ -4,16 +4,16 @@ import java.util.Date;
 
 public class DocumentosMasPrestadosDTO {
 
-	private int n;
+	private int numeroDeDocumentos;
 	private Date fechaInicio;
 	private Date fechaFin;
 
-	public int getN() {
-		return n;
+	public int getNumeroDeDocumentos() {
+		return numeroDeDocumentos;
 	}
 
-	public void setN(int n) {
-		this.n = n;
+	public void setNumeroDeDocumentos(int n) {
+		this.numeroDeDocumentos = n;
 	}
 
 	public Date getFechaInicio() {

@@ -4,20 +4,20 @@ import es.mdef.proyecto_biblioteca_emad.REST.DocumentoModel;
 
 public class PrestamoAgrupadoPorDocumentoResponse {
 
-	private long count;
+	private long suma;
 	private DocumentoModel documentoModel;
 
 	public PrestamoAgrupadoPorDocumentoResponse(long count, DocumentoModel documentoModel) {
-		this.count = count;
+		this.suma = count;
 		this.documentoModel = documentoModel;
 	}
 
-	public long getCount() {
-		return count;
+	public long getSuma() {
+		return suma;
 	}
 
-	public void setCount(long count) {
-		this.count = count;
+	public void setSuma(long count) {
+		this.suma = count;
 	}
 
 	public DocumentoModel getDocumentoModel() {

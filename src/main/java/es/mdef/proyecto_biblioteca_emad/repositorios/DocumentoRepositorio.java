@@ -3,8 +3,11 @@ package es.mdef.proyecto_biblioteca_emad.repositorios;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import es.mdef.proyecto_biblioteca_emad.entidades.Documento;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-public interface DocumentoRepositorio extends JpaRepository<Documento, Long> {
-	List<Documento> findDocumentoByTitulo(String tituloDocumento);
+import es.mdef.proyecto_biblioteca_emad.entidades.DocumentoConId;
+
+@RepositoryRestResource(path = "documentos", collectionResourceRel = "documentos")
+public interface DocumentoRepositorio extends JpaRepository<DocumentoConId, Long> {
+	List<DocumentoConId> findDocumentoByTitulo(String tituloDocumento);
 }

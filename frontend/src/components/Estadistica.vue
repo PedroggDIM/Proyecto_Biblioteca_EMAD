@@ -14,23 +14,14 @@ export default {
     };
   },
   methods: {
-    obtenerDocumentosUtilizados() {
-      // Llamar al método personalizado en el backend con las fechas seleccionadas
-      // Puedes hacer una solicitud HTTP aquí utilizando axios o la librería de tu elección
-      // y pasar las fechas como parámetros en la solicitud
-
-      console.log('Obtener documentos más utilizados entre:', this.fechaInicio, this.fechaFin);
-      // Lógica adicional para manejar la respuesta del backend
-
-      debugger;
-      getDocumentosMasPrestados(this.fechaInicio, this.fechaFin, 5).then(documentosMasPrestadosResponse => {
-        debugger;
+    obtenerDocumentosUtilizados() {   
+      getDocumentosMasPrestados(this.fechaInicio, this.fechaFin, 10).then(documentosMasPrestadosResponse => {
         if (documentosMasPrestadosResponse.mensaje !== '') {
           this.lstDocumentosMasPrestados = documentosMasPrestadosResponse.data.lstDocumentosMasPrestados;
         }
 
       });
-
+      
     }
   }
 };
@@ -65,20 +56,29 @@ export default {
 
   <div v-for="documentoMasPrestado in lstDocumentosMasPrestados" :key="documentoMasPrestado.documentoModel.id" class="card m-0 p-0">
       <div class="card-header text-primary">
-        <strong>Título: </strong>{{ documentoMasPrestado.documentoModel.titulo }}
+        <span>Título: </span>{{ documentoMasPrestado.documentoModel.titulo }}
       </div>
-      <div class="card-body">
-        <p class="mb-0"><strong>IdDocumento: </strong>{{ documentoMasPrestado.documentoModel.id }}</p>
-        <p class="mb-0"><strong>Autor: </strong>{{ documentoMasPrestado.documentoModel.autor }}</p>
-        <p class="mb-0"><strong>Tipo de documento: </strong>{{ documentoMasPrestado.documentoModel.categoria }}</p>
-        <p class="mb-0"><strong>Disponible: </strong>{{ documentoMasPrestado.documentoModel.disponible ? 'Disponible' : 'No disponible' }}</p>
-        <p class="mb-0"><strong>Copias disponibles: </strong>{{ documentoMasPrestado.documentoModel.numCopias }}</p>
-        <p class="mb-0"><strong>Veces prestado: </strong>{{ documentoMasPrestado.count }}</p>
+      <div class="card-body">  
+        <p>
+          <span>Autor: </span>{{ documentoMasPrestado.documentoModel.autor }}
+        </p>
+        <p>
+          <span>Tipo de documento: </span>{{ documentoMasPrestado.documentoModel.categoria }}
+        </p>
+        <p>
+          <span>Disponible: </span>{{ documentoMasPrestado.documentoModel.disponible ? 'Disponible' : 'No disponible' }}
+        </p>
+        <p>
+          <span>Copias disponibles: </span>{{ documentoMasPrestado.documentoModel.numCopias }}
+        </p>
+        <p>
+          <span>Veces prestado: </span>{{ documentoMasPrestado.suma }}
+        </p>
       </div>
   </div>
 </template>
 
-<style>
+<style scoped>
 .texto {
   color: blue;
   font-size: 20px

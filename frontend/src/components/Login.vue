@@ -20,7 +20,7 @@ const { cambiarNivel } = auth
         <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Utilice el botón inferior">
       </div>
       <div class="input-group mb-1">
-        <input type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Use botón básico/admin">
+        <input type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Use botón Básico/Bibliotecario">
       </div>
       <div class="p-2 justify-content-around">Selección del tipo de usuario <span class="btn btn-primary" @click="cambiarNivel">{{ tipoUsuario}}</span></div>               
       </div>
@@ -30,7 +30,7 @@ const { cambiarNivel } = auth
 </div>
 </template>
 
-<style scoped>
+<style>
 .login {
   margin-top: 50px;
   margin-left: 100px;

@@ -7,8 +7,6 @@ public class DocumentosMasPrestadosResponse {
 	private List<PrestamoAgrupadoPorDocumentoResponse> lstDocumentosMasPrestados;
 	private String mensaje;
 
-	
-
 	public List<PrestamoAgrupadoPorDocumentoResponse> getLstDocumentosMasPrestados() {
 		return lstDocumentosMasPrestados;
 	}

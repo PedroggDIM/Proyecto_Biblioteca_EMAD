@@ -16,17 +16,27 @@ export default {
 
 <template>  
  
-  <h4>Usuarios de la aplicación</h4>
+<h4>Usuarios de la aplicación</h4>
 <div class="row">
   <div class="col-12 col-md-6" v-for="usuario of usuarios" :key="usuario.idUsuario">
     <div class="card" >
       <div class="card-body">
         <h5 class="card-title">Usuario {{ usuario.idUsuario }}</h5>
-        <p class="card-text"><strong>UserName:</strong> {{ usuario.username }}</p>
-        <p class="card-text"><strong>Nombre:</strong> {{ usuario.nombre }}</p>
-        <p class="card-text"><strong>Apellidos:</strong> {{ usuario.apellidos }}</p>
-        <p class="card-text"><strong>Extensión:</strong> {{ usuario.telefono }}</p>
-        <p class="card-text"><strong>Correo:</strong> {{ usuario.correo_electronico }}</p>
+        <p>
+          <span>UserName:</span> {{ usuario.username }}
+        </p>
+        <p>
+          <span>Nombre:</span> {{ usuario.nombre }}
+        </p>
+        <p>
+          <span>Apellidos:</span> {{ usuario.apellidos }}
+        </p>
+        <p>
+          <span>Extensión:</span> {{ usuario.telefono }}
+        </p>
+        <p>
+          <span>Correo:</span> {{ usuario.correo_electronico }}
+        </p>
       </div>
     </div>
   </div>
@@ -39,3 +49,4 @@ export default {
      background-color: #f2f2f2;
   }
 </style>
+

@@ -1,36 +1,36 @@
 package es.mdef.proyecto_biblioteca_emad.repositorios.impl;
 
-import es.mdef.proyecto_biblioteca_emad.entidades.Documento;
+import es.mdef.proyecto_biblioteca_emad.entidades.DocumentoConId;
 
 public class PrestamoAgrupadoPorDocumento {
 
-	private long count;
-	private Documento documento;
+	private long cantidad;
+	private DocumentoConId documentoConId;
 
-	public PrestamoAgrupadoPorDocumento(Documento documento, long count) {
-		this.count = count;
-		this.documento = documento;
+	public PrestamoAgrupadoPorDocumento(DocumentoConId documentoConId, long count) {
+		this.cantidad = count;
+		this.documentoConId = documentoConId;
 	}
 
-	public long getCount() {
-		return count;
+	public long getCantidad() {
+		return cantidad;
 	}
 
-	public void setCount(long count) {
-		this.count = count;
+	public void setCantidad(long count) {
+		this.cantidad = count;
 	}
 
-	public Documento getDocumento() {
-		return documento;
+	public DocumentoConId getDocumento() {
+		return documentoConId;
 	}
 
-	public void setDocumento(Documento documento) {
-		this.documento = documento;
+	public void setDocumento(DocumentoConId documentoConId) {
+		this.documentoConId = documentoConId;
 	}
 
 	@Override
 	public String toString() {
-		return "PrestamoAgrupadoPorDocumento [count=" + count + ", documento=" + documento.getTitulo()+"("+documento.getId()+")]\n";
+		return "PrestamoAgrupadoPorDocumento [cantidad=" + cantidad + ", documentoConId=" + documentoConId.getTitulo()+"("+documentoConId.getId()+")]\n";
 	}
 
 }

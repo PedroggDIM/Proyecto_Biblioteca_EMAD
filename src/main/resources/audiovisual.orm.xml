@@ -5,8 +5,8 @@
                                      http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd"
                  version="2.2">
 
-	<entity class="es.mdef.gestionbiblioteca.entidades.Audiovisual" access="FIELD">
-		<!-- <discriminator-value>A</discriminator-value> -->
+	<entity class="es.mdef.proyecto_biblioteca_emad.entidades.Audiovisual" access="FIELD">
+
 		<discriminator-value>audiovisual</discriminator-value>
         <attributes> 
              <basic name="ISAN" optional="false" />

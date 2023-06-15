@@ -1,0 +1,72 @@
+<script>
+import { mapActions, mapState } from "pinia";
+import { documentosStore } from "@/stores/documentos.js";
+import { prestamosStore } from '@/stores/prestamos.js'
+import axios from "axios";
+
+export default {  
+  props: ['documento', 'docId'],
+  emits: ['editarPrestamo'],
+  data() {
+    return {
+      busquedaTitulo: "",
+    };
+  },
+  computed: {
+    ...mapState(documentosStore, ['documentos', 'decrementarCopias']),
+    ...mapState(prestamosStore, ['prestamos']),
+
+    filtroDeBusqueda() {
+      const filtroDeDocumentos = this.documentos.filter((documento) =>
+        documento.titulo
+          .toLowerCase()
+          .includes(this.busquedaTitulo.toLowerCase())
+      );
+    return filtroDeDocumentos;
+    },
+
+  }, 
+  methods: {
+    editarPrestamo(documento) { 
+      this.$emit('editarPrestamo', documento);
+    },
+    
+    decrementarCopias(documentoId){  
+    }
+  }
+};
+</script>
+
+
+<template>
+  <h5>Buscar por Título</h5>
+  <input v-model="busquedaTitulo" type="text" placeholder="Buscar por Título (introduzca el Título)" class="form-control mb-3" />
+  <div v-for="documento in filtroDeBusqueda" :key="documento.id" class="card m-0 p-0">
+    <div v-if="documento.disponible == true">
+      <div class="card-header text-primary">
+        <strong>Título: </strong>{{ documento.titulo }}
+      </div>
+      <div class="card-body">
+        <div class="contenedor d-flex justify-content-end">        
+          <button type="button" class="btn btn-warning" @click="editarPrestamo(documento)">Enviar al formulario</button>
+        </div>       
+        <p>
+          <span>Autor: </span>{{ documento.autor }}
+        </p>
+        <p>
+          <span>Tipo de documento: </span>{{ documento.categoria }}
+        </p>
+        <p>
+          <span>Disponible: </span>{{ documento.disponible ? 'Disponible' : 'No disponible' }}
+        </p>
+        <p>
+          <span>Copias disponibles: </span>{{ documento.numCopias }}
+        </p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style>
+
+</style>

@@ -13,22 +13,20 @@
 			<basic name="numCopias" optional="false" />
 			<basic name="estanteria" optional="false" />
 			<basic name="fechaAlta" optional="false" />
-			<basic name="disponible" optional="false" />		
-			<!-- <basic name="categoria" optional="false"/>-->		
+			<basic name="disponible" optional="false" />			
             
             <one-to-many 
                   name="prestamos"
                   mapped-by="documento" 
-                  target-entity="es.mdef.gestionbiblioteca.entidades.Prestamo" />
+                  target-entity="es.mdef.proyecto_biblioteca_emad.entidades.Prestamo" />
 			
         </attributes>
      </mapped-superclass>
 
-	<entity class="es.mdef.gestionbiblioteca.entidades.DocumentoConId" access="FIELD">
+	<entity class="es.mdef.proyecto_biblioteca_emad.entidades.DocumentoConId" access="FIELD">
 		<table name="DOCUMENTOS"/>
 		<inheritance strategy="SINGLE_TABLE"/>
-		<discriminator-value>null</discriminator-value>
-		<!--  <discriminator-column name="tipo_categoria" discriminator-type="STRING" />-->
+		<discriminator-value>null</discriminator-value>	
 		<discriminator-column name="categoria" discriminator-type="STRING" />
         <attributes> 
             <id name="id">

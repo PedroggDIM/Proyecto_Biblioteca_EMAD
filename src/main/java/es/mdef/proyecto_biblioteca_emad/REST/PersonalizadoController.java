@@ -23,7 +23,7 @@ import es.mdef.proyecto_biblioteca_emad.repositorios.PrestamoRepositorioMetPerso
 import es.mdef.proyecto_biblioteca_emad.repositorios.impl.PrestamoAgrupadoPorDocumento;
 import es.mdef.proyecto_biblioteca_emad.repositorios.spec.PrestamoSpecs;
 
-@CrossOrigin(origins = "*",methods={RequestMethod.GET,RequestMethod.POST})
+@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
 @RestController
 @RequestMapping("/personalizado/")
 public class PersonalizadoController {
@@ -40,7 +40,7 @@ public class PersonalizadoController {
 
 		Date ini = documentosMasPrestadosDTO.getFechaInicio();
 		Date end = documentosMasPrestadosDTO.getFechaFin();
-		int n = documentosMasPrestadosDTO.getN();
+		int n = documentosMasPrestadosDTO.getNumeroDeDocumentos();
 
 		Specification<Prestamo> spec = PrestamoSpecs.enuentraEntreFechas(ini, end);
 
@@ -55,14 +55,14 @@ public class PersonalizadoController {
 
 				DocumentoModel documentoModel = assembler.toModel(prestamoGroupByDocumento.getDocumento());
 				PrestamoAgrupadoPorDocumentoResponse prestamoGroupByDocumentoResponse = new PrestamoAgrupadoPorDocumentoResponse(
-						prestamoGroupByDocumento.getCount(), documentoModel);
+						prestamoGroupByDocumento.getCantidad(), documentoModel);
 
 				lstDocumentosMasPrestadosModel.add(prestamoGroupByDocumentoResponse);
 			}
 
 		} catch (Exception e) {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			mensaje = "Error al recuperar los documentos m�s prestados";
+			mensaje = "Error al recuperar los documentos mas prestados";
 		}
 
 		DocumentosMasPrestadosResponse documentosMasPrestadosResponse = new DocumentosMasPrestadosResponse();

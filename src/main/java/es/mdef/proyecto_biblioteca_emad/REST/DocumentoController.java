@@ -1,5 +1,7 @@
 package es.mdef.proyecto_biblioteca_emad.REST;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,42 +15,44 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import es.mdef.proyecto_biblioteca_emad.ProyectoBibliotecaEmadApplication;
 import es.mdef.proyecto_biblioteca_emad.entidades.Audiovisual;
-import es.mdef.proyecto_biblioteca_emad.entidades.Documento;
-import es.mdef.proyecto_biblioteca_emad.entidades.Documento.Categoria;
+import es.mdef.proyecto_biblioteca_emad.entidades.DocumentoConId;
 import es.mdef.proyecto_biblioteca_emad.entidades.Escrito;
+import es.mdef.proyecto_biblioteca_emad.entidades.Prestamo;
 import es.mdef.proyecto_biblioteca_emad.repositorios.DocumentoRepositorio;
+import es.mdef.proyecto_biblioteca_emad.repositorios.PrestamoRepositorio;
+import es.mdef.proyecto_biblioteca_emad_libreria.Categoria;
 
-@CrossOrigin(origins = "*",methods={RequestMethod.GET,RequestMethod.POST})
-//@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
 @RestController
 @RequestMapping("/documentos")
 public class DocumentoController {
+	private final PrestamoRepositorio prestamoRepositorio;
 	private final DocumentoRepositorio repositorio;
 	private final DocumentoAssembler assembler;
 	private final DocumentoListaAssembler listaAssembler;
-	private final PrestamoListaAssembler rsListaAssembler;
 	private final Logger log;
 
 	DocumentoController(DocumentoRepositorio repositorio, DocumentoAssembler assembler,
-			DocumentoListaAssembler listaAssembler, PrestamoListaAssembler rsListaAssembler) {
+			DocumentoListaAssembler listaAssembler, PrestamoRepositorio prestamoRepositorio) {
 		this.repositorio = repositorio;
 		this.assembler = assembler;
 		this.listaAssembler = listaAssembler;
-		this.rsListaAssembler = rsListaAssembler;
+		this.prestamoRepositorio = prestamoRepositorio;
 		log = ProyectoBibliotecaEmadApplication.log;
 	}
 
 	@GetMapping("{id}")
 	public DocumentoModel one(@PathVariable Long id) {
-		Documento documento = repositorio.findById(id)
+		DocumentoConId documentoConId = repositorio.findById(id)
 				.orElseThrow(() -> new RegisterNotFoundException(id, "documento"));
 		// compruebo datos get Documento
-		log.info("Recuperado el " + documento.getTitulo());
-		log.info("Recuperado el " + documento.isDisponible());
-		log.info("Recuperado el " + documento.getCategoria());
-		return assembler.toModel(documento);
+		log.info("Recuperado el " + documentoConId.getTitulo());
+		log.info("Recuperado el " + documentoConId.isDisponible());
+		log.info("Recuperado el " + documentoConId.getCategoria());
+		return assembler.toModel(documentoConId);
 	}
 
 	@GetMapping
@@ -61,74 +65,60 @@ public class DocumentoController {
 		return listaAssembler.toCollection(repositorio.findDocumentoByTitulo(tituloDocumento));
 	}
 
-//   Metodo para recuperar todos los prestamos que tiene un documento	
-//		@GetMapping("{id}/prestamos")
-//		public CollectionModel<PrestamoListaModel> prestamosDeDocumento(@PathVariable Long id) {
-//			Documento documento = repositorio.findById(id)
-//					.orElseThrow(() -> new RegisterNotFoundException(id, "documento"));
-//		    return rsListaAssembler.toCollection(documento.getPrestamos());
-//		}
-
 	@PostMapping
 	public DocumentoModel add(@RequestBody DocumentoModel model) {
-		Documento documento = repositorio.save(assembler.toEntity(model));
-		log.info("Aniadido " + documento);
-		return assembler.toModel(documento);
+
+		DocumentoConId documentoConId = repositorio.save(assembler.toEntity(model));
+		log.info("Aniadido " + documentoConId);
+		return assembler.toModel(documentoConId);
 	}
 
 	@PutMapping("{id}")
 	public DocumentoModel edit(@PathVariable Long id, @RequestBody DocumentoModel model) {
-		Documento documento = repositorio.findById(id).map(doc -> {
+		DocumentoConId documentoConId = repositorio.findById(id).map(doc -> {
 
-			if (model.getCategoria() == Categoria.escrito) {
-				Escrito escrito = new Escrito();
-				escrito.setNumCopias(model.getNumCopias());
-				escrito.setTitulo(model.getTitulo());
-				escrito.setAutor(model.getAutor());
-				escrito.setEstanteria(model.getEstanteria());
-				escrito.setDisponible(model.isDisponible());
-				escrito.setSinopsis(model.getSinopsis());
-				escrito.setFechaAlta(model.getFechaAlta());
-				escrito.setISBN(model.getISBN());
-				escrito.setNumpaginas(model.getNumPaginas());
-				escrito.setTamano(model.getTamano());
-				doc = escrito;
-			} else if (model.getCategoria() == Categoria.audiovisual) {
-				Audiovisual audiovisual = new Audiovisual();
-				audiovisual.setNumCopias(model.getNumCopias());
-				audiovisual.setTitulo(model.getTitulo());
-				audiovisual.setAutor(model.getAutor());
-				audiovisual.setEstanteria(model.getEstanteria());
-				audiovisual.setDisponible(model.isDisponible());
-				audiovisual.setSinopsis(model.getSinopsis());
-				audiovisual.setFechaAlta(model.getFechaAlta());
-				audiovisual.setISAN(model.getISAN());
-				audiovisual.setDuracion(model.getDuracion());
-				audiovisual.setTipo(model.getTipo());
-				doc = audiovisual;
+			if (doc instanceof Escrito) {
+				doc.setNumCopias(model.getNumCopias());
+				doc.setTitulo(model.getTitulo());
+				doc.setAutor(model.getAutor());
+				doc.setEstanteria(model.getEstanteria());
+				doc.setDisponible(model.isDisponible());
+				doc.setSinopsis(model.getSinopsis());
+				doc.setFechaAlta(model.getFechaAlta());
+				((Escrito) doc).setISBN(model.getISBN());
+				((Escrito) doc).setNumpaginas(model.getNumPaginas());
+				((Escrito) doc).setTamano(model.getTamano());
+			} else if (doc instanceof Audiovisual) {
+				doc.setNumCopias(model.getNumCopias());
+				doc.setTitulo(model.getTitulo());
+				doc.setAutor(model.getAutor());
+				doc.setEstanteria(model.getEstanteria());
+				doc.setDisponible(model.isDisponible());
+				doc.setSinopsis(model.getSinopsis());
+				doc.setFechaAlta(model.getFechaAlta());
+				((Audiovisual) doc).setISAN(model.getISAN());
+				((Audiovisual) doc).setDuracion(model.getDuracion());
+				((Audiovisual) doc).setTipo(model.getTipo());
 			}
-			doc.setId(id);
 			return repositorio.save(doc);
 		}).orElseThrow(() -> new RegisterNotFoundException(id, "documento"));
-		log.info("Actualizado " + documento);
-		return assembler.toModel(documento);
+		log.info("Actualizado " + documentoConId);
+		return assembler.toModel(documentoConId);
 	}
 
 	@DeleteMapping("{id}")
-	public void delete(@PathVariable Long id) {
-		log.info("Borrado documento " + id);
-		repositorio.deleteById(id);
+	public boolean delete(@PathVariable Long id) {
+		log.info("Borrar documento " + id);
+		boolean eliminado = false;
+		DocumentoConId documentoConId = repositorio.findById(id).get();
+		List<Prestamo> listaPrestamo = prestamoRepositorio.findByDocumento(documentoConId);
+		if (listaPrestamo.isEmpty()) {
+			eliminado = true;
+			repositorio.deleteById(id);
+		} else {
+			System.out.println("No se puede eliminar porque el libro ha sido prestado.");
+		}
+		return eliminado;
 	}
-	// Metodo personalizado: retorna las familias de las preguntas en las que ha
-	// participado o hecho el usuario.
-//		@GetMapping({"{id}/familias"})
-//		public CollectionModel<FamiliaListaModel> familias(@PathVariable long id){
-//			List<Pregunta>preguntas = repositorioPreguntas.findPreguntaByUsuario(id);
-//			Set<Familia>familias = new HashSet<>();
-//			for (Pregunta pregunta : preguntas) {
-//				familias.add(pregunta.getFamilia());
-//			}
-//			return familiaListaAssembler.toCollection(new ArrayList<>(familias));
-//		}	
 
 }

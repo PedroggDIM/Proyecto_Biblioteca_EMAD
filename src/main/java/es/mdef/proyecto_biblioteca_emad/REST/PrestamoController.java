@@ -2,6 +2,7 @@ package es.mdef.proyecto_biblioteca_emad.REST;
 
 import org.slf4j.Logger;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,14 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import es.mdef.proyecto_biblioteca_emad.ProyectoBibliotecaEmadApplication;
 import es.mdef.proyecto_biblioteca_emad.entidades.Prestamo;
 import es.mdef.proyecto_biblioteca_emad.repositorios.PrestamoRepositorio;
-import es.mdef.proyecto_biblioteca_emad.entidades.Documento;
+import es.mdef.proyecto_biblioteca_emad.entidades.DocumentoConId;
 import es.mdef.proyecto_biblioteca_emad.repositorios.DocumentoRepositorio;
 
-//para el despliegue
-//@CrossOrigin(origins = "*")
-//@CrossOrigin(origins = "http://localhost:5177")
-@CrossOrigin(origins = "*",methods={RequestMethod.GET,RequestMethod.POST})
-
+@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
 @RestController
 @RequestMapping("/prestamos")
 public class PrestamoController {
@@ -59,10 +56,11 @@ public class PrestamoController {
 	public PrestamoModel add(@RequestBody PrestamoModel model) {
 		System.out.println(model);
 
-		Prestamo newPrestamo = null;
-		String message;
+		PrestamoModel result = null;
+		String mensaje;
 		Prestamo prestamo = assembler.toEntity(model);
-		Documento doc = prestamo.getDocumento();
+
+		DocumentoConId doc = (DocumentoConId) prestamo.getDocumento();
 		int copias = doc.getNumCopias();
 		if (copias > 0) {
 			copias--;
@@ -72,15 +70,16 @@ public class PrestamoController {
 			}
 			docRepositorio.save(doc);
 
-			newPrestamo = repositorio.save(prestamo);
-			message = "A�adido " + newPrestamo.toString();
+			Prestamo newPrestamo = repositorio.save(prestamo);
+			result = assembler.toModel(newPrestamo);
+
+			mensaje = "Aniadido " + newPrestamo.toString();
 		} else {
-			newPrestamo = null;
-			message = "El documento " + doc.getId() + " no se puede prestar porque no hay copias disponibles";
+			mensaje = "El documento " + doc.getId() + " no se puede prestar porque no hay copias disponibles";
 		}
 
-		log.info(message);
-		return assembler.toModel(newPrestamo);
+		log.info(mensaje);
+		return result;
 	}
 
 	@PutMapping("{id}")
@@ -89,7 +88,11 @@ public class PrestamoController {
 			pre.setIdUsuario(model.getIdUsuario());
 			pre.setFechaInicio(model.getFechaInicio());
 			pre.setFechaFin(model.getFechaFin());
-			pre.setDocumento(model.getDocumento());
+
+			Link linkdoc = model.getLink("documento").get();
+			String[] aux = linkdoc.getHref().split("/");
+			long docId = Long.parseLong(aux[aux.length - 1]);
+			pre.setDocumento(docRepositorio.findById(docId).get());
 			return repositorio.save(pre);
 		}).orElseThrow(() -> new RegisterNotFoundException(id, "prestamo"));
 		log.info("Actualizado " + prestamo);
@@ -102,12 +105,5 @@ public class PrestamoController {
 		repositorio.deleteById(id);
 
 	}
-//	     Metodo para recuperar todos los prestamos que tiene un documento	
-//	@GetMapping("{id}/prestamos")
-//	public CollectionModel<PrestamoListaModel> prestamosDeDocumento(@PathVariable Long id) {
-//		Prestamo prestamo = repositorio.findById(id)
-//				.orElseThrow(() -> new RegisterNotFoundException(id, "prestamo"));
-//	    return listaAssembler.toCollection(prestamo.getDocumento());
-//	}
 
 }
