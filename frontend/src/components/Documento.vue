@@ -1,6 +1,5 @@
 <script>
-import { mapActions, mapState } from "pinia";
-import axios from "axios";
+import { mapState } from "pinia";
 import { documentosStore } from "@/stores/documentos.js";
 import moment from 'moment';
 

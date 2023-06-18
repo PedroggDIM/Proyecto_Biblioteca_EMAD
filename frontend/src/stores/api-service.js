@@ -31,7 +31,7 @@ export function guardarDocumento(documento) {
 }
 
 export function borrarDocumento(documento) {
-  return llamadaApi(cambiarHttpPorHttps(documento._links.self.href), 'delete') // con la api poner la url tipo: (documento._links.self.href.replace('http', 'https'), 'delete')
+  return llamadaApi(cambiarHttpPorHttps(documento._links.self.href), 'delete') 
 }
 
 export function getEntidades(nombre) {

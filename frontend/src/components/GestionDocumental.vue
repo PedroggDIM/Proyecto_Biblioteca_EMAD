@@ -1,7 +1,6 @@
 <script>
 import Calendar from "primevue/calendar";
 import inputDocumental from "@/components/inputDocumental.vue";
-import { guardarDocumento } from "@/stores/api-service.js";
 import { documentosStore } from "@/stores/documentos.js";
 import { mapActions } from "pinia";
 
@@ -61,7 +60,7 @@ export default {
       this.documento.categoria = [];
       this.documento._links = null;
     },
-    
+
     formatearFecha(documento) {          
       let arr = documento.fechaAlta.split('T')[0];
       let dataf = arr.split('-');

@@ -18,15 +18,17 @@ export default {
   emits: ["guardarPrestamo"],
   data() {
     return {
+      noPermitirDevolver: true,
       prestamo: {
-        id:'',
-        isbn_isan:'',
+        id: '',
+        isbn_isan: '',
         documento: '',
         email: '',
         nombre: '',
         apellidos: '',
         fechaInicio: '',
-        fechaFin: ''
+        fechaFin: '',
+        devuelto: ''
       }
     }
   },
@@ -46,6 +48,10 @@ export default {
       }
       this.prestamo.fechaInicio = '';
       this.prestamo.fechaFin = '';
+      this.prestamo.devuelto = false;
+
+       // Deshabilita el check para que no se pueda devolver el prestamo porque este es uno nuevo
+      this.noPermitirDevolver = true;
     },
 
     editarP(prestamo) {
@@ -60,7 +66,15 @@ export default {
       this.prestamo.autor = prestamo.documento.autor;
       this.prestamo.fechaInicio = prestamo.fechaInicio;
       this.prestamo.fechaFin = prestamo.fechaFin;
+      this.prestamo.devuelto = prestamo.devuelto;
       this.prestamo._links = prestamo._links;
+
+      if (!prestamo.devuelto) {
+        // Habilita el check para poder devolver el prestamo
+        this.noPermitirDevolver = false;
+      }else{
+        this.noPermitirDevolver = true;
+      }
     },
 
     cambiarFechaAlta(event) {
@@ -69,10 +83,10 @@ export default {
 
         const miliFechaInicio = this.prestamo.fechaInicio.getTime();
         if (this.prestamo.categoria === 'escrito') {
-          date = new Date(miliFechaInicio + 86400000 * 7);     
+          date = new Date(miliFechaInicio + 86400000 * 7);
 
         } else {
-          date = new Date(miliFechaInicio + 86400000 * 3);     
+          date = new Date(miliFechaInicio + 86400000 * 3);
         }
         const fechaFormateada = date.toLocaleDateString('en-us', { weekday: "long", year: "numeric", month: "short", day: "numeric" })
         const arrayAux = fechaFormateada.split(',');
@@ -94,15 +108,18 @@ export default {
       this.prestamo.apellidos = '';
       this.prestamo.fechaInicio = '';
       this.prestamo.fechaFin = '';
+      this.prestamo.devuelto = '';
       this.prestamo.categoria = '';
+
+      this.noPermitirDevolver = false;
     },
 
     fGuardarPrestamo(prestamo) {
-      this.guardarPrestamo(prestamo).then(r => {  
+      this.guardarPrestamo(prestamo).then(r => {
         this.limpiarCampos();
-        if(r.data){
-          this.incluirPrestamo(r.data);    
-          this.$refs.documntoPrestamoRef.decrementarCopias(r.data.documento.id);
+        if (r.data) {
+          const nuevoPrestamo = this.incluirPrestamo(r.data);
+          this.$refs.documntoPrestamoRef.gestionarCopias(r.data, nuevoPrestamo);
         }
       });
     },
@@ -123,7 +140,7 @@ export default {
             <div class="row">
               <div class="col-12 col-sm-5 fondoFormularioGraba">
                 <h5 class="margeninput" style="color: blue;">Formulario de grabación de Préstamos</h5><br>
-               
+
                 <p class="margeninput">ISBN / ISAN</p>
                 <input type="number" placeholder="Introduzca el Identificador del documento" class="form-control disabled"
                   v-model.trim="prestamo.isbn_isan">
@@ -152,6 +169,16 @@ export default {
 
                 <p class="margeninput">Fecha finalización préstamo (Escrito +7 días | Audiovisual +3 días)</p>
                 <Calendar class="disabled" v-model.trim="prestamo.fechaFin" dateFormat="dd/MM/yy"></Calendar>
+
+                <div class="my-2">
+                  <p class="margeninput">Devolución del documento:<br></p>
+                  <div class="form-radio form-radio-inline">
+                    <input :disabled='noPermitirDevolver' type="checkbox" class="form-check-input" id="check-1"
+                      v-model="prestamo.devuelto" value="true">
+                    <label for="check-1" class="form-check-label">Devolver prestamo</label>
+                  </div>
+                </div>
+
                 <div>
                   <div class="button-container">
                     <br>
@@ -177,7 +204,7 @@ export default {
       </TabPanel>
       <TabPanel header="Listado de Préstamos">
         <div class="col-12 col-sm-7">
-        
+
           <h2 style="color: blue;">Listado de Préstamos</h2>
           <Prestamo :prestamo="prestamo" @editarPrestamo="editarP"> </Prestamo>
         </div>
@@ -185,10 +212,9 @@ export default {
       </TabPanel>
     </TabView>
   </div>
+  
+    
 </template>
 
 
-<style>
-
-
-</style>
+<style></style>

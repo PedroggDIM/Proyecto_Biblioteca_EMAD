@@ -25,13 +25,14 @@ export const prestamosStore = defineStore('prestamos', {
       prestamo.fechaInicio = new Date(parseInt(dataf[0]), parseInt(dataf[1]) -1, parseInt(dataf[2]));
     },
 
-    
     getPrestamosPorId(id) {
       return this.prestamos.find(p => p.id == id)
     },
 
-    incluirPrestamo(prestamo) {      
-      this.formatearFecha(prestamo);
+    incluirPrestamo(prestamo) {     
+      this.formatearFecha(prestamo); 
+      
+      let nuevoPrestamo = false;
 
       let pos = -1;
       for (let i = 0; i < this.prestamos.length && pos == -1; i++) {
@@ -46,8 +47,11 @@ export const prestamosStore = defineStore('prestamos', {
         prestamoModificado.fechaInicio = prestamo.fechaInicio;
         prestamoModificado.fechaFin = prestamo.fechaFin;
       } else {
+        nuevoPrestamo = true;
         this.prestamos.push(prestamo);
       }
+
+      return nuevoPrestamo;
     },
 
     guardarPrestamo(prestamo) {

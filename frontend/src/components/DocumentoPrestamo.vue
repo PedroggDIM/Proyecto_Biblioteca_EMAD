@@ -1,8 +1,8 @@
 <script>
-import { mapActions, mapState } from "pinia";
+import {  mapState } from "pinia";
 import { documentosStore } from "@/stores/documentos.js";
 import { prestamosStore } from '@/stores/prestamos.js'
-import axios from "axios";
+
 
 export default {  
   props: ['documento', 'docId'],
@@ -30,9 +30,35 @@ export default {
     editarPrestamo(documento) { 
       this.$emit('editarPrestamo', documento);
     },
-    
-    decrementarCopias(documentoId){  
-    }
+    gestionarCopias(prestamo, nuevoPrestamo) {
+      const documentoId = prestamo.documento.id;
+
+      let pos = -1;
+      for (let i = 0; i < this.documentos.length && pos === -1; i++) {
+        const documentoAuxiliar = this.documentos[i];
+        if (documentoAuxiliar.id === documentoId) {
+          pos = i;
+        }
+      }
+
+      if (pos !== -1) {
+        const documentoModificado = this.documentos[pos];
+
+        if(nuevoPrestamo){
+          documentoModificado.numCopias--;
+        }else{ // Si modifico el prestamo
+          if(prestamo.devuelto){
+            documentoModificado.numCopias++;
+          }
+        }
+
+        if (documentoModificado.numCopias === 0) {
+          documentoModificado.disponible = false;
+        }else{
+          documentoModificado.disponible = true;
+        }
+      }
+    },
   }
 };
 </script>
@@ -44,7 +70,7 @@ export default {
   <div v-for="documento in filtroDeBusqueda" :key="documento.id" class="card m-0 p-0">
     <div v-if="documento.disponible == true">
       <div class="card-header text-primary">
-        <strong>Título: </strong>{{ documento.titulo }}
+        <span>Título: </span>{{ documento.titulo }}
       </div>
       <div class="card-body">
         <div class="contenedor d-flex justify-content-end">        

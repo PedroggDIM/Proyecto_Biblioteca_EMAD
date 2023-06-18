@@ -55,7 +55,6 @@ export default {
     ...mapActions(documentosStore, ['getDocumentos', 'eliminarDocumento']),
 
     borrarDocumento(documento) {
-
       this.eliminarDocumento(documento).then(r => {
         if (r.data) {
           let eliminado = false;
@@ -145,11 +144,11 @@ export default {
         <div class="my-2">
           <p class="margeninput">Indique si se encuentra disponible</p>
           <div class="form-radio form-radio-inline">
-            <input type="radio" class="form-check-input" id="radio-1" v-model="documento.disponible" value="true">
+            <input readonly="readonly" type="radio" class="form-check-input" id="radio-1" v-model="documento.disponible" value="true">
             <label for="check-1" class="form-check-label">Disponible Sí</label>
           </div>
           <div class="form-radio form-radio-inline">
-            <input type="radio" class="form-check-input" id="radio-2" v-model="documento.disponible" value="false">
+            <input readonly="readonly" type="radio" class="form-check-input" id="radio-2" v-model="documento.disponible" value="false">
             <label for="check-2" class="form-check-label">Disponible No</label>
           </div>
         </div>
@@ -198,7 +197,7 @@ export default {
         <h5 class="margeninput" style="color: blue;">Edición/Borrado de documentos</h5><br>
 
         <Documento @borrarDocumento="borrarDocumento" @editarDocumento="editarDocumento">
-
+        
         </Documento>
       </div>
     </div>

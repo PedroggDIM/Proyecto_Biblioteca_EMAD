@@ -49,8 +49,10 @@ export function guardarPrestamo(prestamo) {
 
   data['fechaInicio'] = convierteFecha(prestamo.fechaInicio);
   data['fechaFin'] = convierteFecha(prestamo.fechaFin);
+  data['devuelto'] = prestamo.devuelto;
+ 
   data['_links'] = {};
-  data['_links']['documento']={};
+  data['_links']['documento'] = {};
   data['_links']['documento']['href'] = cambiarHttpPorHttps(prestamo.documento._links.self.href);
 
   return llamadaApi(url, method, data);
@@ -89,8 +91,8 @@ export function getDocumentosMasPrestados(fechaIni, fechaFin, n) {
   const fechaInicioStr = convierteFecha(fechaIni);
   const fechaFinStr = convierteFecha(fechaFin);
 
-
   
+
   return llamadaApi(`${host}/personalizado/ndocumentosmasprestado`, 'post',
     { fechaInicio: fechaInicioStr, fechaFin: fechaFinStr, numeroDeDocumentos: n });
 }
