@@ -84,21 +84,35 @@ public class PrestamoController {
 
 	@PutMapping("{id}")
 	public PrestamoModel edit(@PathVariable Long id, @RequestBody PrestamoModel model) {
-		Prestamo prestamo = repositorio.findById(id).map(pre -> {
-			pre.setIdUsuario(model.getIdUsuario());
-			pre.setFechaInicio(model.getFechaInicio());
-			pre.setFechaFin(model.getFechaFin());
+	    Prestamo prestamo = repositorio.findById(id).map(pre -> {
+	        pre.setIdUsuario(model.getIdUsuario());
+	        pre.setFechaInicio(model.getFechaInicio());
+	        pre.setFechaFin(model.getFechaFin());
+	        pre.setDevuelto(model.isDevuelto());
 
-			Link linkdoc = model.getLink("documento").get();
-			String[] aux = linkdoc.getHref().split("/");
-			long docId = Long.parseLong(aux[aux.length - 1]);
-			pre.setDocumento(docRepositorio.findById(docId).get());
-			return repositorio.save(pre);
-		}).orElseThrow(() -> new RegisterNotFoundException(id, "prestamo"));
-		log.info("Actualizado " + prestamo);
-		return assembler.toModel(prestamo);
+	        Link linkdoc = model.getLink("documento").get();
+	        String[] aux = linkdoc.getHref().split("/");
+	        long docId = Long.parseLong(aux[aux.length - 1]);
+	        pre.setDocumento(docRepositorio.findById(docId).get());
+
+	        if (pre.isDevuelto()) {
+	            DocumentoConId documento = (DocumentoConId) pre.getDocumento();
+	            int copias = documento.getNumCopias();
+	            copias++;
+	            documento.setNumCopias(copias);
+	            documento.setDisponible(true);
+
+	            docRepositorio.save(documento);
+	        }
+
+	        return repositorio.save(pre);
+	    }).orElseThrow(() -> new RegisterNotFoundException(id, "prestamo"));
+
+	    log.info("Actualizado " + prestamo);
+	    return assembler.toModel(prestamo);
 	}
-
+	
+	
 	@DeleteMapping("{id}")
 	public void delete(@PathVariable Long id) {
 		log.info("Borrado prestamo " + id);

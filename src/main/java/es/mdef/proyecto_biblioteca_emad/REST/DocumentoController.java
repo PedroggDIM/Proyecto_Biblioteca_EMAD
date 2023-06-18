@@ -23,7 +23,6 @@ import es.mdef.proyecto_biblioteca_emad.entidades.Escrito;
 import es.mdef.proyecto_biblioteca_emad.entidades.Prestamo;
 import es.mdef.proyecto_biblioteca_emad.repositorios.DocumentoRepositorio;
 import es.mdef.proyecto_biblioteca_emad.repositorios.PrestamoRepositorio;
-import es.mdef.proyecto_biblioteca_emad_libreria.Categoria;
 
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
 @RestController
@@ -77,25 +76,24 @@ public class DocumentoController {
 	public DocumentoModel edit(@PathVariable Long id, @RequestBody DocumentoModel model) {
 		DocumentoConId documentoConId = repositorio.findById(id).map(doc -> {
 
+			doc.setNumCopias(model.getNumCopias());
+			doc.setTitulo(model.getTitulo());
+			doc.setAutor(model.getAutor());
+			doc.setEstanteria(model.getEstanteria());
+			doc.setSinopsis(model.getSinopsis());
+			doc.setFechaAlta(model.getFechaAlta());
+			
+			if(doc.getNumCopias() > 0) {
+				doc.setDisponible(true);
+			}else {
+				doc.setDisponible(false);
+			}
+			
 			if (doc instanceof Escrito) {
-				doc.setNumCopias(model.getNumCopias());
-				doc.setTitulo(model.getTitulo());
-				doc.setAutor(model.getAutor());
-				doc.setEstanteria(model.getEstanteria());
-				doc.setDisponible(model.isDisponible());
-				doc.setSinopsis(model.getSinopsis());
-				doc.setFechaAlta(model.getFechaAlta());
 				((Escrito) doc).setISBN(model.getISBN());
 				((Escrito) doc).setNumpaginas(model.getNumPaginas());
 				((Escrito) doc).setTamano(model.getTamano());
 			} else if (doc instanceof Audiovisual) {
-				doc.setNumCopias(model.getNumCopias());
-				doc.setTitulo(model.getTitulo());
-				doc.setAutor(model.getAutor());
-				doc.setEstanteria(model.getEstanteria());
-				doc.setDisponible(model.isDisponible());
-				doc.setSinopsis(model.getSinopsis());
-				doc.setFechaAlta(model.getFechaAlta());
 				((Audiovisual) doc).setISAN(model.getISAN());
 				((Audiovisual) doc).setDuracion(model.getDuracion());
 				((Audiovisual) doc).setTipo(model.getTipo());

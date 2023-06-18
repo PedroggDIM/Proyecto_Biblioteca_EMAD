@@ -13,6 +13,7 @@ public class PrestamoModel extends RepresentationModel<PrestamoModel> {
 
 	private Date fechaInicio;
 	private Date fechaFin;
+	private boolean devuelto;
 	private DocumentoModel documento;
 
 	public int getIdUsuario() {
@@ -54,5 +55,13 @@ public class PrestamoModel extends RepresentationModel<PrestamoModel> {
 	public void setDocumento(DocumentoModel documento) {
 		this.documento = documento;
 	}
+
+	public boolean isDevuelto() {
+		return devuelto;
+	}
+
+	public void setDevuelto(boolean devuelto) {
+		this.devuelto = devuelto;
+	}	
 
 }

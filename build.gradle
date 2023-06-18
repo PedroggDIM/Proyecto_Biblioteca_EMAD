@@ -27,7 +27,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	
 	// libreria externa
-	implementation 'com.github.PedroggDIM:libreriaEMAD:84014e4'
+	implementation 'com.github.PedroggDIM:libreriaEMAD:95ab67b'
 }
 
 tasks.named('test') {

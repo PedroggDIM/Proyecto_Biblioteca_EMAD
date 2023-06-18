@@ -27,6 +27,8 @@ public class PrestamoListaAssembler implements RepresentationModelAssembler<Pres
 		model.setIdUsuario(entity.getIdUsuario());
 		model.setFechaInicio(entity.getFechaInicio());
 		model.setFechaFin(entity.getFechaFin());
+		model.setDevuelto(entity.isDevuelto());
+		
 
 		model.add(linkTo(methodOn(PrestamoController.class).one(entity.getId())).withSelfRel());
 

@@ -27,6 +27,7 @@ public class PrestamoAssembler implements RepresentationModelAssembler<Prestamo,
 		model.setIdUsuario(entity.getIdUsuario());
 		model.setFechaInicio(entity.getFechaInicio());
 		model.setFechaFin(entity.getFechaFin());
+		model.setDevuelto(entity.isDevuelto());
 
 		model.add(linkTo(methodOn(PrestamoController.class).one(entity.getId())).withSelfRel());
 
@@ -51,7 +52,7 @@ public class PrestamoAssembler implements RepresentationModelAssembler<Prestamo,
 		String[] aux = linkdoc.getHref().split("/");
 		long docId = Long.parseLong(aux[aux.length - 1]);
 		prestamo.setDocumento(repositorio.findById(docId).get());
-
+        prestamo.setDevuelto(model.isDevuelto());
 		return prestamo;
 	}
 
