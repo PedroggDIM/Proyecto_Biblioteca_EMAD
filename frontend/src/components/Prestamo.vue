@@ -2,6 +2,7 @@
 import { mapState } from "pinia";
 import { prestamosStore } from "@/stores/prestamos.js";
 import moment from 'moment';
+import usuariosJson from '@/assets/usuarios.json'
 
 export default {
   props: ["prestamo"],
@@ -9,6 +10,7 @@ export default {
   data() {
     return {
       busquedaTitulo: "",
+      usuarios : usuariosJson.usuario,
     };
   },
   computed: {
@@ -40,7 +42,11 @@ export default {
 
       this.prestamos = prestamosStore().getPrestamos();
 
-    }
+    },
+    getUsuario(idUsuario) {
+    const usuario = this.usuarios.find((user) => user.idUsuario === idUsuario);
+    return usuario || {};
+    },
   },
 };
 </script>
@@ -60,6 +66,12 @@ export default {
       <p>
         <span>Usuario: </span>{{ prestamo.idUsuario }}
       </p>
+      <p>
+      <span>Identificación usuario: </span>{{ getUsuario(prestamo.idUsuario).correo_electronico }}
+      </p>
+      <p>
+      <span>Nombre: </span>{{ getUsuario(prestamo.idUsuario).nombre }} {{ getUsuario(prestamo.idUsuario).apellidos }}
+      </p>      
       <p>
         <span>Titulo: </span>{{ prestamo.documento.titulo }}
       </p>

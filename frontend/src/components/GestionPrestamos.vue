@@ -6,6 +6,7 @@ import { prestamosStore } from '@/stores/prestamos.js'
 import DocumentoPrestamo from '@/components/DocumentoPrestamo.vue'
 import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
+import usuariosJson from '@/assets/usuarios.json'
 
 const documntoPrestamoRef = null;
 
@@ -18,6 +19,7 @@ export default {
   emits: ["guardarPrestamo"],
   data() {
     return {
+      usuarios: usuariosJson.usuario,
       noPermitirDevolver: true,
       prestamo: {
         id: '',
@@ -33,7 +35,19 @@ export default {
     }
   },
   computed: {
-    ...mapState(prestamosStore, ['prestamos'])
+    ...mapState(prestamosStore, ['prestamos']),
+
+    bloquear() {
+      let usuario = this.getUsuarioByEmail(this.prestamo.email.trim());
+     
+      return (
+        usuario == null ||
+        this.prestamo.nombre.trim() === '' ||
+        this.prestamo.apellidos.trim() === '' ||
+        this.prestamo.fechaInicio == '' ||
+        this.prestamo.fechaFin === ''
+      );
+    },
 
   },
   methods: {
@@ -46,11 +60,12 @@ export default {
       } else {
         this.prestamo.isbn_isan = documento.isan;
       }
+
       this.prestamo.fechaInicio = '';
       this.prestamo.fechaFin = '';
       this.prestamo.devuelto = false;
 
-       // Deshabilita el check para que no se pueda devolver el prestamo porque este es uno nuevo
+      // Deshabilita el check para que no se pueda devolver el prestamo porque este es uno nuevo
       this.noPermitirDevolver = true;
     },
 
@@ -62,8 +77,15 @@ export default {
       } else {
         this.prestamo.isbn_isan = prestamo.documento.isan;
       }
+
       this.prestamo.titulo = prestamo.documento.titulo;
       this.prestamo.autor = prestamo.documento.autor;
+
+      let usuario = this.getUsuarioById(prestamo.idUsuario);
+      this.prestamo.email = usuario.correo_electronico;
+      this.prestamo.nombre = usuario.nombre;
+      this.prestamo.apellidos = usuario.apellidos;
+
       this.prestamo.fechaInicio = prestamo.fechaInicio;
       this.prestamo.fechaFin = prestamo.fechaFin;
       this.prestamo.devuelto = prestamo.devuelto;
@@ -72,7 +94,7 @@ export default {
       if (!prestamo.devuelto) {
         // Habilita el check para poder devolver el prestamo
         this.noPermitirDevolver = false;
-      }else{
+      } else {
         this.noPermitirDevolver = true;
       }
     },
@@ -123,6 +145,24 @@ export default {
         }
       });
     },
+
+    getUsuarioById(idUsuario) {
+      const usuario = this.usuarios.find((user) => user.idUsuario === idUsuario);
+      return usuario || {};
+    },
+
+    getUsuarioByEmail(email) {
+      const usuario = this.usuarios.find((user) => 
+      {
+        if(user.correo_electronico === email){
+          return user;
+        }
+      
+      });
+      return usuario;
+    },
+
+   
   },
 
   created() {
@@ -142,8 +182,8 @@ export default {
                 <h5 class="margeninput" style="color: blue;">Formulario de grabación de Préstamos</h5><br>
 
                 <p class="margeninput">ISBN / ISAN</p>
-                <input type="number" placeholder="Introduzca el Identificador del documento" class="form-control disabled"
-                  v-model.trim="prestamo.isbn_isan">
+                <input type="number" min="0" placeholder="Introduzca el Identificador del documento"
+                  class="form-control disabled" v-model.trim="prestamo.isbn_isan">
                 <p class="margeninput">Título</p>
                 <input type="text" placeholder="Introduzca el título del documento" class="form-control disabled"
                   v-model.trim="prestamo.documento.titulo">
@@ -182,8 +222,8 @@ export default {
                 <div>
                   <div class="button-container">
                     <br>
-                    <button type="button" class="btn btn-success" @click="fGuardarPrestamo(prestamo)">Confirmar
-                      reserva</button>
+                    <button :disabled="bloquear" type="button" class="btn btn-success"
+                      @click="fGuardarPrestamo(prestamo)">Confirmar reserva</button>
                   </div>
                 </div>
 
@@ -212,8 +252,6 @@ export default {
       </TabPanel>
     </TabView>
   </div>
-  
-    
 </template>
 
 

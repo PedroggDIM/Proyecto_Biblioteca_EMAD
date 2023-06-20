@@ -136,7 +136,7 @@ export default {
         <p class="margeninput">Sinopsis</p>
         <textarea placeholder="Introduzca la sinposis" class="form-control" v-model.trim="documento.sinopsis"></textarea>
         <p class="margeninput">Estantería</p>
-        <input type="number" placeholder="Introduzca número de estantería" class="form-control"
+        <input type="number" min="0" placeholder="Introduzca número de estantería" class="form-control"
           v-model.number="documento.estanteria">
         <p class="margeninput">Fecha de alta</p>
         <Calendar v-model.trim="documento.fechaAlta" dateFormat="dd/MM/yy"></Calendar>
@@ -154,7 +154,7 @@ export default {
         </div>
         <div class="form-radio form-radio-inline">
           <label for="check-1" class="form-check-label">Copias disponibles</label>
-          <input type="number" placeholder="Introduzca copias disponibles" class="form-control"
+          <input type="number" min="0" placeholder="Introduzca copias disponibles" class="form-control"
             v-model.number="documento.numCopias">
         </div>
 
@@ -171,18 +171,18 @@ export default {
         </div>
         <div v-if="documento.categoria === 'escrito'">
           <p class="margeninput">ISBN</p>
-          <input type="number" placeholder="Introduzca el ISBN" class="form-control" v-model.trim="documento.isbn">
+          <input type="number" min="0" placeholder="Introduzca el ISBN" class="form-control" v-model.trim="documento.isbn">
           <p class="margeninput">Número de páginas</p>
-          <input type="number" placeholder="Introduzca el número de páginas" class="form-control"
+          <input type="number" min="0" placeholder="Introduzca el número de páginas" class="form-control"
             v-model.trim="documento.numPaginas">
           <p class="margeninput">Tamaño</p>
-          <input type="number" placeholder="Introduzca el tamaño" class="form-control" v-model.trim="documento.tamano">
+          <input type="number" min="0" placeholder="Introduzca el tamaño" class="form-control" v-model.trim="documento.tamano">
         </div>
         <div v-if="documento.categoria === 'audiovisual'" :disabled="documento.categoria === 'escrito'">
           <p>ISAN</p>
-          <input type="number" placeholder="Introduzca el ISAN" class="form-control" v-model.trim="documento.isan">
+          <input type="number" min="0" placeholder="Introduzca el ISAN" class="form-control" v-model.trim="documento.isan">
           <p>Duración</p>
-          <input type="number" placeholder="Introduzca la duración" class="form-control"
+          <input type="number" min="0" placeholder="Introduzca la duración" class="form-control"
             v-model.trim="documento.duracion">
           <p>Tipo</p>
           <input type="text" placeholder="Introduzca el tipo" class="form-control" v-model.trim="documento.tipo">
