@@ -24,7 +24,11 @@ export default {
     };
   },
   methods: {
-    ...mapActions(documentosStore, ["guardarDocumento", "getDocumentos", "incluirNuevoDocumento"]),
+    ...mapActions(documentosStore, [
+      "guardarDocumento",
+      "getDocumentos",
+      "incluirNuevoDocumento",
+    ]),
     procesarFormulario() {
       if (this.documento.titulo.trim() === "") {
         return;
@@ -43,28 +47,32 @@ export default {
     },
 
     limpiarDocumento() {
-      this.documento.id = '';
-      this.documento.titulo = '';
-      this.documento.autor = '';
-      this.documento.sinopsis = '';
+      this.documento.id = "";
+      this.documento.titulo = "";
+      this.documento.autor = "";
+      this.documento.sinopsis = "";
       this.documento.estanteria = 0;
       this.documento.numCopias = 0;
-      this.documento.fechaAlta = '';
-      this.documento.duracion = '';
-      this.documento.numPaginas = '';
-      this.documento.tamano = '';
-      this.documento.isan = '';
-      this.documento.isbn = '';
-      this.documento.tipo = '';
+      this.documento.fechaAlta = "";
+      this.documento.duracion = "";
+      this.documento.numPaginas = "";
+      this.documento.tamano = "";
+      this.documento.isan = "";
+      this.documento.isbn = "";
+      this.documento.tipo = "";
       this.documento.disponible = [];
       this.documento.categoria = [];
       this.documento._links = null;
     },
 
-    formatearFecha(documento) {          
-      let arr = documento.fechaAlta.split('T')[0];
-      let dataf = arr.split('-');
-      documento.fechaAlta = new Date(parseInt(dataf[0]), parseInt(dataf[1]) - 1, parseInt(dataf[2]));
+    formatearFecha(documento) {
+      let arr = documento.fechaAlta.split("T")[0];
+      let dataf = arr.split("-");
+      documento.fechaAlta = new Date(
+        parseInt(dataf[0]),
+        parseInt(dataf[1]) - 1,
+        parseInt(dataf[2])
+      );
     },
     fGuardarDocumento(documento) {
       this.guardarDocumento(documento).then((r) => {
@@ -79,15 +87,21 @@ export default {
 </script>
 
 <template>
-  <h4>
-    Gestión de los documentos de la biblioteca (grabación, edición y borrado del catálogo)
-  </h4>
-  <form class="mt-3" @submit.prevent="procesarFormulario">
-    <inputDocumental ref="inputDocumentalRef"  :documento="documento" @guardarDocumento="fGuardarDocumento">
-    </inputDocumental>
-
-    <hr />
-  </form>
+  <div>
+    <h4>
+      Gestión de los documentos de la biblioteca (grabación, edición y borrado
+      del catálogo)
+    </h4>
+    <form class="mt-3" @submit.prevent="procesarFormulario">
+      <inputDocumental
+        ref="inputDocumentalRef"
+        :documento="documento"
+        @guardarDocumento="fGuardarDocumento"
+      >
+      </inputDocumental>
+      <hr />
+    </form>
+  </div>
 </template>
 
 <style>

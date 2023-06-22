@@ -1,56 +1,58 @@
 <script>
-import { mapState, mapActions } from 'pinia'
-import Documento from '@/components/Documento.vue'
-import DocumentoHome from '@/components/DocumentoHome.vue'
-import { documentosStore } from '@/stores/documentos.js'
+import { mapState, mapActions } from "pinia";
+import Documento from "@/components/Documento.vue";
+import DocumentoHome from "@/components/DocumentoHome.vue";
+import { documentosStore } from "@/stores/documentos.js";
 
-export default { 
+export default {
   components: {
-    Documento,  
-    DocumentoHome },
-   data() {
-     return {
-        busquedaTitulo: '',
-        busquedaPorAutor: '',
-        buscaSinopsis: '',    
-      };
+    Documento,
+    DocumentoHome,
   },
- computed: {
-    ...mapState(documentosStore, ['documentos']),    
-    filtroDeBusqueda() {  
-
+  data() {
+    return {
+      busquedaTitulo: "",
+      busquedaPorAutor: "",
+      buscaSinopsis: "",
+    };
+  },
+  computed: {
+    ...mapState(documentosStore, ["documentos"]),
+    filtroDeBusqueda() {
       const filtroDeDocumentos = this.documentos.filter((documento) => {
-      return documento.titulo.toLowerCase().includes(this.busquedaTitulo.toLowerCase()) &&
-      documento.autor.toLowerCase().includes(this.busquedaPorAutor.toLowerCase()) &&
-      documento.sinopsis.toLowerCase().includes(this.buscaSinopsis.toLowerCase()) 
-  });
-  return filtroDeDocumentos;
+        return (
+          documento.titulo
+            .toLowerCase()
+            .includes(this.busquedaTitulo.toLowerCase()) &&
+          documento.autor
+            .toLowerCase()
+            .includes(this.busquedaPorAutor.toLowerCase()) &&
+          documento.sinopsis
+            .toLowerCase()
+            .includes(this.buscaSinopsis.toLowerCase())
+        );
+      });
+      return filtroDeDocumentos;
     },
   },
-  methods: { 
-    ...mapActions(documentosStore, [ 'getDocumentos' ]),   
-  },    
+  methods: {
+    ...mapActions(documentosStore, ["getDocumentos"]),
+  },
   created() {
-    this.getDocumentos()
-  }
+    this.getDocumentos();
+  },
 };
 </script>
 
 <template>
-      
-  <img src="../assets/logo_app_lite.png" class="img-fluid" alt="icono EMAD"/>
+  <div>
+    <img src="../assets/logo_app_lite.png" class="img-fluid" alt="icono EMAD" />
     <h5 class="d-none d-md-block">
       Biblioteca del EMAD. Consulta del catálogo.
-    </h5><br>
-
-          <DocumentoHome/>  
- 
+    </h5>
+    <br />
+    <DocumentoHome />
+  </div>
 </template>
 
-<style>
-
-</style>
-
-
-
-
+<style></style>
