@@ -5,7 +5,7 @@ import moment from "moment";
 
 export default {
   props: ["documento"],
-  emits: ["borrarDocumento"],
+  emits: ["borrarDocumento", "editarDocumento"],
   data() {
     return {
       busquedaTitulo: "",

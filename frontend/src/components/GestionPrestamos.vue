@@ -7,6 +7,7 @@ import DocumentoPrestamo from "@/components/DocumentoPrestamo.vue";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
 import usuariosJson from "@/assets/usuarios.json";
+
 const documntoPrestamoRef = null;
 
 export default {
@@ -37,7 +38,6 @@ export default {
   },
   computed: {
     ...mapState(prestamosStore, ["prestamos"]),
-
     bloquear() {
       let usuario = this.getUsuarioByEmail(this.prestamo.email.trim());
       return (
@@ -291,8 +291,7 @@ export default {
                   reservar para añadir campos
                 </p>
                 <DocumentoPrestamo
-                  ref="documntoPrestamoRef"
-                  :docId="docId"
+                  ref="documntoPrestamoRef"            
                   @editarPrestamo="editarPrestamo"
                 >
                 </DocumentoPrestamo>

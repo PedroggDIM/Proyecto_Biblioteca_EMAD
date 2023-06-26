@@ -11,7 +11,7 @@ export default {
     Calendar,
     Documento,
   },
-  emits: ["guardarDocumento"],
+  emits: ["guardarDocumento", "editarDocumento"],
   data() {
     return {
       documento: {
@@ -38,15 +38,34 @@ export default {
   computed: {
     ...mapState(documentosStore, ["documentos"]),
     bloquear() {
-      return (
-        this.documento.titulo.trim() === "" ||
+      let disabled = this.documento.titulo.trim() === "" ||
         this.documento.autor.trim() === "" ||
         this.documento.sinopsis.trim() === "" ||
-        this.documento.estanteria === 0 ||
-        this.documento.fechaAlta === "" ||
+        this.documento.estanteria < 0 ||
+        this.documento.estanteria === '' ||
+        this.documento.numCopias < 0 ||
+        this.documento.numCopias === '' ||
+        this.documento.fechaAlta === '' ||
         this.documento.disponible.length === 0 ||
-        this.documento.categoria.length === 0
-      );
+        this.documento.categoria.length === 0;
+      if (!disabled) {
+        if (this.documento.categoria === 'escrito') {
+          disabled = this.documento.isbn === '' || 
+          this.documento.isbn < 0 ||
+          this.documento.numPaginas === '' ||
+          this.documento.numPaginas < 0 ||
+          this.documento.tamano === '' ||
+          this.documento.tamano < 0;
+        } else {
+          disabled = this.documento.isan === '' ||
+          this.documento.isan < 0 ||          
+          this.documento.duracion === '' ||
+          this.documento.duracion < 0 || 
+          this.documento.tipo === '';
+          
+        }
+      }
+      return disabled;
     },
   },
   methods: {
@@ -85,6 +104,7 @@ export default {
       this.documento._links = null;
       this.documento.categoria = "";
     },
+
     editarDocumento(documento) {
       (this.documento.id = documento.id),
         (this.documento.titulo = documento.titulo);
@@ -102,10 +122,12 @@ export default {
       this.documento.duracion = documento.duracion;
       this.documento.tipo = documento.tipo;
       this.documento._links = documento._links;
+
       if (documento.categoria != null && documento.categoria !== "") {
         this.documento.categoria = documento.categoria.toLowerCase();
       }
     },
+
     guardarDocumento(documento) {
       this.$emit("guardarDocumento", documento);
     },
@@ -192,6 +214,7 @@ export default {
             v-model.number="documento.numCopias"
           />
         </div>
+
         <div class="my-2">
           <p class="margeninput">Seleccione el tipo de documento</p>
           <div class="form-radio form-radio-inline">
@@ -285,6 +308,7 @@ export default {
       <div class="col-12 col-sm-7 fondoEditElim">
         <h5 class="colorAzul">Edición/Borrado de documentos</h5>
         <br />
+
         <Documento
           @borrarDocumento="borrarDocumento"
           @editarDocumento="editarDocumento"
@@ -301,9 +325,11 @@ export default {
   border: 1px;
   border-radius: 3px;
 }
+
 .fondoEditElim {
   background-color: #d6eaf8;
 }
+
 .margeninput {
   margin-top: 10px;
   margin-bottom: 0px;
