@@ -45,7 +45,6 @@ export default {
         categoria: [],
       };
     },
-
     limpiarDocumento() {
       this.documento.id = "";
       this.documento.titulo = "";
@@ -64,7 +63,6 @@ export default {
       this.documento.categoria = [];
       this.documento._links = null;
     },
-
     formatearFecha(documento) {
       let arr = documento.fechaAlta.split("T")[0];
       let dataf = arr.split("-");

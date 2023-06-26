@@ -34,7 +34,6 @@ export default {
       },
     };
   },
-
   computed: {
     ...mapState(documentosStore, ["documentos"]),
     bloquear() {
@@ -70,7 +69,6 @@ export default {
   },
   methods: {
     ...mapActions(documentosStore, ["getDocumentos", "eliminarDocumento"]),
-
     borrarDocumento(documento) {
       this.eliminarDocumento(documento).then((r) => {
         if (r.data) {
@@ -85,7 +83,6 @@ export default {
         }
       });
     },
-
     limpiarDocumento() {
       (this.documento.id = ""), (this.documento.titulo = "");
       this.documento.autor = "";
@@ -104,7 +101,6 @@ export default {
       this.documento._links = null;
       this.documento.categoria = "";
     },
-
     editarDocumento(documento) {
       (this.documento.id = documento.id),
         (this.documento.titulo = documento.titulo);
@@ -122,12 +118,10 @@ export default {
       this.documento.duracion = documento.duracion;
       this.documento.tipo = documento.tipo;
       this.documento._links = documento._links;
-
       if (documento.categoria != null && documento.categoria !== "") {
         this.documento.categoria = documento.categoria.toLowerCase();
       }
     },
-
     guardarDocumento(documento) {
       this.$emit("guardarDocumento", documento);
     },
@@ -325,11 +319,9 @@ export default {
   border: 1px;
   border-radius: 3px;
 }
-
 .fondoEditElim {
   background-color: #d6eaf8;
 }
-
 .margeninput {
   margin-top: 10px;
   margin-bottom: 0px;

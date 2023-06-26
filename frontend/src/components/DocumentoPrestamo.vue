@@ -38,7 +38,6 @@ export default {
           pos = i;
         }
       }
-
       if (pos !== -1) {
         const documentoModificado = this.documentos[pos];
 
@@ -50,7 +49,6 @@ export default {
             documentoModificado.numCopias++;
           }
         }
-
         if (documentoModificado.numCopias === 0) {
           documentoModificado.disponible = false;
         } else {
