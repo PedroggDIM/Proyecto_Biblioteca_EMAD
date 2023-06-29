@@ -11,61 +11,32 @@ export default {
     Calendar,
     Documento,
   },
-  emits: ["guardarDocumento", "editarDocumento"],
+  emits: ["guardarDocumento"],
   data() {
     return {
+      mensajeError: [],
       documento: {
-        id: "",
-        titulo: "",
-        autor: "",
-        sinopsis: "",
-        estanteria: "",
-        fechaAlta: "",
-        numCopias: "",
-        disponible: "",
-        categoria: "",
-        isbn: "",
-        numPaginas: "",
-        tamano: "",
-        isan: "",
-        duracion: "",
-        tipo: "",
-        _links: "",
+        id: '',
+        titulo: '',
+        autor: '',
+        sinopsis: '',
+        estanteria: '',
+        fechaAlta: '',
+        numCopias: '',
+        disponible: '',
+        categoria: '',
+        isbn: '',
+        numPaginas: '',
+        tamano: '',
+        isan: '',
+        duracion: '',
+        tipo: '',
+        _links: '',
       },
     };
   },
   computed: {
     ...mapState(documentosStore, ["documentos"]),
-    bloquear() {
-      let disabled = this.documento.titulo.trim() === "" ||
-        this.documento.autor.trim() === "" ||
-        this.documento.sinopsis.trim() === "" ||
-        this.documento.estanteria < 0 ||
-        this.documento.estanteria === '' ||
-        this.documento.numCopias < 0 ||
-        this.documento.numCopias === '' ||
-        this.documento.fechaAlta === '' ||
-        this.documento.disponible.length === 0 ||
-        this.documento.categoria.length === 0;
-      if (!disabled) {
-        if (this.documento.categoria === 'escrito') {
-          disabled = this.documento.isbn === '' || 
-          this.documento.isbn < 0 ||
-          this.documento.numPaginas === '' ||
-          this.documento.numPaginas < 0 ||
-          this.documento.tamano === '' ||
-          this.documento.tamano < 0;
-        } else {
-          disabled = this.documento.isan === '' ||
-          this.documento.isan < 0 ||          
-          this.documento.duracion === '' ||
-          this.documento.duracion < 0 || 
-          this.documento.tipo === '';
-          
-        }
-      }
-      return disabled;
-    },
   },
   methods: {
     ...mapActions(documentosStore, ["getDocumentos", "eliminarDocumento"]),
@@ -84,35 +55,37 @@ export default {
       });
     },
     limpiarDocumento() {
-      (this.documento.id = ""), (this.documento.titulo = "");
-      this.documento.autor = "";
-      this.documento.sinopsis = "";
-      this.documento.estanteria = "";
-      this.documento.fechaAlta = "";
-      this.documento.numCopias = "";
-      this.documento.disponible = "";
-      (this.documento.categoria = ""),
-        (this.documento.isbn = ""),
-        (this.documento.numPaginas = "");
-      this.documento.tamano = "";
-      this.documento.isan = "";
-      this.documento.duracion = "";
-      this.documento.tipo = "";
+      this.documento.id = ''
+      this.documento.titulo = '';
+      this.documento.autor = '';
+      this.documento.sinopsis = '';
+      this.documento.estanteria = '';
+      this.documento.fechaAlta = '';
+      this.documento.numCopias = '';
+      this.documento.disponible = '';
+      this.documento.categoria = '',
+      this.documento.isbn = '',
+      this.documento.numPaginas = '';
+      this.documento.tamano = '';
+      this.documento.isan = '';
+      this.documento.duracion = '';
+      this.documento.tipo = '';
       this.documento._links = null;
-      this.documento.categoria = "";
+      this.documento.categoria = '';
+      this.mensajeError = [];
     },
     editarDocumento(documento) {
-      (this.documento.id = documento.id),
-        (this.documento.titulo = documento.titulo);
+      this.documento.id = documento.id,
+      this.documento.titulo = documento.titulo;
       this.documento.autor = documento.autor;
       this.documento.sinopsis = documento.sinopsis;
       this.documento.estanteria = documento.estanteria;
       this.documento.fechaAlta = documento.fechaAlta;
       this.documento.numCopias = documento.numCopias;
       this.documento.disponible = documento.disponible;
-      (this.documento.categoria = documento.categoria),
-        (this.documento.isbn = documento.isbn),
-        (this.documento.numPaginas = documento.numPaginas);
+      this.documento.categoria = documento.categoria,
+      this.documento.isbn = documento.isbn,
+      this.documento.numPaginas = documento.numPaginas;
       this.documento.tamano = documento.tamano;
       this.documento.isan = documento.isan;
       this.documento.duracion = documento.duracion;
@@ -122,8 +95,75 @@ export default {
         this.documento.categoria = documento.categoria.toLowerCase();
       }
     },
-    guardarDocumento(documento) {
-      this.$emit("guardarDocumento", documento);
+    validarFormulario() {
+      this.mensajeError = [];
+      let valid = true;
+      if (this.documento.titulo == null || this.documento.titulo.trim() === '') {
+        valid = false;
+        this.mensajeError.push('Inserte el titulo del documento.');
+      }
+      if (this.documento.autor == null || this.documento.autor.trim() === '') {
+        valid = false;
+        this.mensajeError.push('Inserte el autor del documento.');
+      }
+      if (this.documento.sinopsis == null || this.documento.sinopsis.trim() === '') {
+        valid = false;
+        this.mensajeError.push('Inserte la sinopsis del documento.');
+      }
+      if (this.documento.estanteria == null || this.documento.estanteria === '' || this.documento.estanteria < 0) {
+        valid = false;
+        this.mensajeError.push('Indique la estantería donde se localiza el documento.');
+      }
+      if (this.documento.numCopias == null || this.documento.numCopias === '' || this.documento.numCopias < 0) {
+        valid = false;
+        this.mensajeError.push('Indique el número de copias del documento. (Mayor que 0).');
+      }
+      if (this.documento.fechaAlta == null || this.documento.fechaAlta === '') {
+        valid = false;
+        this.mensajeError.push('Indique la fecha de alta del documento.');
+      }
+      if (this.documento.disponible == null || this.documento.disponible === '') {
+        valid = false;
+        this.mensajeError.push('Indique si el documento está disponible.');
+      }
+      if (this.documento.categoria == null || this.documento.categoria === '') {
+        valid = false;
+        this.mensajeError.push('Indique la categoria del documento.');
+      } else {
+        if (this.documento.categoria === 'escrito') {
+          if (this.documento.isbn == null || this.documento.isbn === '') {
+            valid = false;
+            this.mensajeError.push('Indique el isbn del documento.');
+          }
+          if (this.documento.numPaginas == null || this.documento.numPaginas === '' || this.documento.numPaginas <= 0) {
+            valid = false;
+            this.mensajeError.push('Indique el número de páginas. (Mayor que 0).');
+          }
+          if (this.documento.tamano == null || this.documento.tamano === '' || this.documento.tamano <= 0) {
+            valid = false;
+            this.mensajeError.push('Indique el tamaño del documento. (Mayor que 0).');
+          }
+        } else {
+          if (this.documento.isan == null || this.documento.isan === '') {
+            valid = false;
+            this.mensajeError.push('Indique el isan del documento.');
+          }
+          if (this.documento.duracion == null || this.documento.duracion === '' || this.documento.duracion <= 0) {
+            valid = false;
+            this.mensajeError.push('Indique la duración. (Mayor que 0).');
+          }
+          if (this.documento.tipo == null || this.documento.tipo === '') {
+            valid = false;
+            this.mensajeError.push('Indique el tipo del documento.');
+          }
+        }
+      }
+      return valid;
+    },
+    guardarDocumento(documento) {      
+      if (this.validarFormulario()) {    
+        this.$emit("guardarDocumento", documento);
+      }
     },
   },
   created() {
@@ -138,175 +178,78 @@ export default {
       <div class="col-12 col-sm-5 fondoFormularioGraba">
         <h5 class="colorAzul">Formulario de grabación de documentos</h5>
         <p class="margeninput">Título</p>
-        <input
-          type="text"
-          placeholder="Introduzca el título"
-          class="form-control"
-          v-model.trim="documento.titulo"
-        />
+        <input type="text" placeholder="Introduzca el título" class="form-control" v-model.trim="documento.titulo" />
         <p class="margeninput">Autor</p>
-        <input
-          type="text"
-          placeholder="Introduzca el autor"
-          class="form-control"
-          v-model.trim="documento.autor"
-        />
+        <input type="text" placeholder="Introduzca el autor" class="form-control" v-model.trim="documento.autor" />
         <p class="margeninput">Sinopsis</p>
-        <textarea
-          placeholder="Introduzca la sinposis"
-          class="form-control"
-          v-model.trim="documento.sinopsis"
-        ></textarea>
+        <textarea placeholder="Introduzca la sinposis" class="form-control" v-model.trim="documento.sinopsis"></textarea>
         <p class="margeninput">Estantería</p>
-        <input
-          type="number"
-          min="0"
-          placeholder="Introduzca número de estantería"
-          class="form-control"
-          v-model.number="documento.estanteria"
-        />
+        <input type="number" min="0" placeholder="Introduzca número de estantería" class="form-control"
+          v-model.number="documento.estanteria" />
         <p class="margeninput">Fecha de alta</p>
-        <Calendar
-          v-model.trim="documento.fechaAlta"
-          dateFormat="dd/MM/yy"
-        ></Calendar>
-
+        <Calendar v-model.trim="documento.fechaAlta" dateFormat="dd/MM/yy"></Calendar>
         <div class="my-2">
           <p class="margeninput">Indique si se encuentra disponible</p>
           <div class="form-radio form-radio-inline">
-            <input
-              readonly="readonly"
-              type="radio"
-              class="form-check-input"
-              id="radio-1"
-              v-model="documento.disponible"
-              value="true"
-            />
+            <input readonly="readonly" type="radio" class="form-check-input" id="radio-1" v-model="documento.disponible"
+              value="true" />
             <label for="check-1" class="form-check-label">Disponible Sí</label>
           </div>
           <div class="form-radio form-radio-inline">
-            <input
-              readonly="readonly"
-              type="radio"
-              class="form-check-input"
-              id="radio-2"
-              v-model="documento.disponible"
-              value="false"
-            />
+            <input readonly="readonly" type="radio" class="form-check-input" id="radio-2" v-model="documento.disponible"
+              value="false" />
             <label for="check-2" class="form-check-label">Disponible No</label>
           </div>
         </div>
         <div class="form-radio form-radio-inline">
-          <label for="check-1" class="form-check-label"
-            >Copias disponibles</label
-          >
-          <input
-            type="number"
-            min="0"
-            placeholder="Introduzca copias disponibles"
-            class="form-control"
-            v-model.number="documento.numCopias"
-          />
+          <label for="check-1" class="form-check-label">Copias disponibles</label>
+          <input type="number" min="0" placeholder="Introduzca copias disponibles" class="form-control"
+            v-model.number="documento.numCopias" />
         </div>
-
         <div class="my-2">
           <p class="margeninput">Seleccione el tipo de documento</p>
           <div class="form-radio form-radio-inline">
-            <input
-              type="radio"
-              class="form-check-input"
-              id="radio-1"
-              v-model="documento.categoria"
-              value="escrito"
-            />
-            <label for="check-1" class="form-check-label"
-              >Documento escrito</label
-            >
+            <input type="radio" class="form-check-input" id="radio-1" v-model="documento.categoria" value="escrito" />
+            <label for="check-1" class="form-check-label">Documento escrito</label>
           </div>
           <div class="form-radio form-radio-inline">
-            <input
-              type="radio"
-              class="form-check-input"
-              id="radio-2"
-              v-model="documento.categoria"
-              value="audiovisual"
-            />
-            <label for="check-2" class="form-check-label"
-              >Documento audiovisual</label
-            >
+            <input type="radio" class="form-check-input" id="radio-2" v-model="documento.categoria" value="audiovisual" />
+            <label for="check-2" class="form-check-label">Documento audiovisual</label>
           </div>
         </div>
         <div v-if="documento.categoria === 'escrito'">
           <p class="margeninput">ISBN</p>
-          <input
-            type="number"
-            min="0"
-            placeholder="Introduzca el ISBN"
-            class="form-control"
-            v-model.trim="documento.isbn"
-          />
+          <input type="number" min="0" placeholder="Introduzca el ISBN" class="form-control"
+            v-model.trim="documento.isbn" />
           <p class="margeninput">Número de páginas</p>
-          <input
-            type="number"
-            min="0"
-            placeholder="Introduzca el número de páginas"
-            class="form-control"
-            v-model.trim="documento.numPaginas"
-          />
+          <input type="number" min="0" placeholder="Introduzca el número de páginas" class="form-control"
+            v-model.trim="documento.numPaginas" />
           <p class="margeninput">Tamaño</p>
-          <input
-            type="number"
-            min="0"
-            placeholder="Introduzca el tamaño"
-            class="form-control"
-            v-model.trim="documento.tamano"
-          />
+          <input type="number" min="0" placeholder="Introduzca el tamaño" class="form-control"
+            v-model.trim="documento.tamano" />
         </div>
-        <div
-          v-if="documento.categoria === 'audiovisual'"
-          :disabled="documento.categoria === 'escrito'"
-        >
+        <div v-if="documento.categoria === 'audiovisual'" :disabled="documento.categoria === 'escrito'">
           <p>ISAN</p>
-          <input
-            type="number"
-            min="0"
-            placeholder="Introduzca el ISAN"
-            class="form-control"
-            v-model.trim="documento.isan"
-          />
+          <input type="number" min="0" placeholder="Introduzca el ISAN" class="form-control"
+            v-model.trim="documento.isan" />
           <p>Duración</p>
-          <input
-            type="number"
-            min="0"
-            placeholder="Introduzca la duración"
-            class="form-control"
-            v-model.trim="documento.duracion"
-          />
+          <input type="number" min="0" placeholder="Introduzca la duración" class="form-control"
+            v-model.trim="documento.duracion" />
           <p>Tipo</p>
-          <input
-            type="text"
-            placeholder="Introduzca el tipo"
-            class="form-control"
-            v-model.trim="documento.tipo"
-          />
+          <input type="text" placeholder="Introduzca el tipo" class="form-control" v-model.trim="documento.tipo" />
         </div>
-        <button
-          type="button"
-          class="btn btn-success"
-          @click="guardarDocumento(documento)"
-          :disabled="bloquear"
-        >
+        <button type="button" class="btn btn-success" @click="guardarDocumento(documento)">
           Guardar
         </button>
+        <div>
+          <p v-if="mensajeError.length != 0">Revise los siguientes errores:</p>
+          <p  class="error" v-for="error in mensajeError">{{ error }}</p>
+        </div>
       </div>
       <div class="col-12 col-sm-7 fondoEditElim">
         <h5 class="colorAzul">Edición/Borrado de documentos</h5>
         <br />
-
-        <Documento
-          @borrarDocumento="borrarDocumento"
-          @editarDocumento="editarDocumento"
-        >
+        <Documento @borrarDocumento="borrarDocumento" @editarDocumento="editarDocumento">
         </Documento>
       </div>
     </div>
@@ -325,5 +268,8 @@ export default {
 .margeninput {
   margin-top: 10px;
   margin-bottom: 0px;
+}
+.error {
+  color: red;
 }
 </style>

@@ -21,13 +21,14 @@ export default {
   emits: ["guardarPrestamo"],
   data() {
     return {
+      mensajeError: [],
       usuarios: usuariosJson.usuario,
       noPermitirDevolver: true,
       prestamo: {
         id: "",
         isbn_isan: "",
-        documento: "",
-        email: "",
+        documento: {},
+        email: "Selecciona el usuario",
         nombre: "",
         apellidos: "",
         fechaInicio: "",
@@ -38,16 +39,6 @@ export default {
   },
   computed: {
     ...mapState(prestamosStore, ["prestamos"]),
-    bloquear() {
-      let usuario = this.getUsuarioByEmail(this.prestamo.email.trim());
-      return (
-        usuario == null ||
-        this.prestamo.nombre.trim() === "" ||
-        this.prestamo.apellidos.trim() === "" ||
-        this.prestamo.fechaInicio == "" ||
-        this.prestamo.fechaFin === ""
-      );
-    },
   },
   methods: {
     ...mapActions(prestamosStore, [
@@ -55,6 +46,34 @@ export default {
       "getPrestamos",
       "incluirPrestamo",
     ]),
+    validarFormulario() {
+      this.mensajeError = [];
+      let usuario = this.getUsuarioByEmail(this.prestamo.email.trim());
+      let valid = true;
+      if (usuario == null ||
+        this.prestamo.nombre.trim() === "" ||
+        this.prestamo.email.trim() === "Seleccione un email" ||
+        this.prestamo.apellidos.trim() === "") {
+        valid = false;
+        this.mensajeError.push('Debe indicar un usuario para el prestamo.');
+      }
+      if (this.prestamo.documento == null ||
+        (this.prestamo.documento.titulo && this.prestamo.documento.titulo.trim() === '') ||
+        (this.prestamo.documento.autor && this.prestamo.documento.autor.trim() === '') ||
+        this.prestamo.isbn_isan === '') {
+        valid = false;
+        this.mensajeError.push('Debe indicar un documento para el prestamo.');
+      }
+      if (this.prestamo.fechaInicio == "") {
+        valid = false;
+        this.mensajeError.push('Debe indicar una fecha de inicio.');
+      }
+      if (this.prestamo.fechaFin === "") {
+        valid = false;
+        this.mensajeError.push('Debe indicar una fecha de fin.');
+      }
+      return valid;
+    },
     editarPrestamo(documento) {
       this.prestamo.documento = documento;
       if (documento.categoria === "escrito") {
@@ -76,8 +95,6 @@ export default {
       } else {
         this.prestamo.isbn_isan = prestamo.documento.isan;
       }
-      this.prestamo.titulo = prestamo.documento.titulo;
-      this.prestamo.autor = prestamo.documento.autor;
       let usuario = this.getUsuarioById(prestamo.idUsuario);
       this.prestamo.email = usuario.correo_electronico;
       this.prestamo.nombre = usuario.nombre;
@@ -92,6 +109,18 @@ export default {
       } else {
         this.noPermitirDevolver = true;
       }
+    },
+    cambiaUsuario(event) {
+      let email = event.currentTarget.value;
+      if (email !== 'Selecciona el usuario') {
+        let usuario = this.getUsuarioByEmail(email);
+        this.prestamo.nombre = usuario.nombre;
+        this.prestamo.apellidos = usuario.apellidos;
+      } else {
+        this.prestamo.nombre = '';
+        this.prestamo.apellidos = '';
+      }
+      this.prestamo.email = email;
     },
     cambiarFechaAlta(event) {
       if (
@@ -138,26 +167,30 @@ export default {
       }
     },
     limpiarCampos() {
-      this.prestamo.id = "";
-      this.prestamo.titulo = "";
-      this.prestamo.autor = "";
-      this.prestamo.email = "";
-      this.prestamo.nombre = "";
-      this.prestamo.apellidos = "";
-      this.prestamo.fechaInicio = "";
-      this.prestamo.fechaFin = "";
-      this.prestamo.devuelto = "";
-      this.prestamo.categoria = "";
+      this.prestamo.id = '';
+      this.prestamo.isbn_isan = '';
+      this.prestamo.documento = {};
+      this.prestamo.email = 'Selecciona el usuario';
+      this.prestamo.nombre = '';
+      this.prestamo.apellidos = '';
+      this.prestamo.fechaInicio = '';
+      this.prestamo.fechaFin = '';
+      this.prestamo.devuelto = '';
+      this.prestamo.categoria = '';
       this.noPermitirDevolver = false;
+      this.mensajeError = [];
     },
-    fGuardarPrestamo(prestamo) {
-      this.guardarPrestamo(prestamo).then((r) => {
-        this.limpiarCampos();
-        if (r.data) {
-          const nuevoPrestamo = this.incluirPrestamo(r.data);
-          this.$refs.documntoPrestamoRef.gestionarCopias(r.data, nuevoPrestamo);
-        }
-      });
+    fGuardarPrestamo(prestamo) {    
+      if (this.validarFormulario()) {
+        // Si los datos son válidos guardamos el prestamo
+        this.guardarPrestamo(prestamo).then((r) => {
+          this.limpiarCampos();
+          if (r.data) {
+            const nuevoPrestamo = this.incluirPrestamo(r.data);
+            this.$refs.documntoPrestamoRef.gestionarCopias(r.data, nuevoPrestamo);
+          }
+        });
+      }
     },
     getUsuarioById(idUsuario) {
       const usuario = this.usuarios.find(
@@ -191,94 +224,51 @@ export default {
                 <h5 class="colorAzul">Formulario de grabación de Préstamos</h5>
                 <br />
                 <p class="margeninput">ISBN / ISAN</p>
-                <input
-                  type="number"
-                  min="0"
-                  placeholder="Introduzca el Identificador del documento"
-                  class="form-control disabled"
-                  v-model.trim="prestamo.isbn_isan"
-                />
+                <input type="number" min="0" placeholder="Introduzca el Identificador del documento"
+                  class="form-control disabled" v-model.trim="prestamo.isbn_isan" readonly />
                 <p class="margeninput">Título</p>
-                <input
-                  type="text"
-                  placeholder="Introduzca el título del documento"
-                  class="form-control disabled"
-                  v-model.trim="prestamo.documento.titulo"
-                />
+                <input type="text" placeholder="Introduzca el título del documento" class="form-control disabled"
+                  v-model.trim="prestamo.documento.titulo" readonly />
                 <p class="margeninput">Autor</p>
-                <input
-                  type="text"
-                  placeholder="Introduzca el título del documento"
-                  class="form-control disabled"
-                  v-model.trim="prestamo.documento.autor"
-                />
+                <input type="text" placeholder="Introduzca el título del documento" class="form-control disabled"
+                  v-model.trim="prestamo.documento.autor" readonly />
                 <p class="margeninput">E-mail</p>
-                <input
-                  type="email"
-                  placeholder="Introduzca el email"
-                  class="form-control"
-                  v-model.trim="prestamo.email"
-                  required
-                />
+                <select class="form-control" v-model.trim="prestamo.email" @change="cambiaUsuario($event)">
+                  <option selected="selected">Selecciona el usuario</option>
+                  <option :value="user.correo_electronico" v-for="user in usuarios">{{ user.correo_electronico }}</option>
+                </select>
                 <p class="margeninput">Nombre usuario</p>
-                <input
-                  type="text"
-                  placeholder="Nombre usuario"
-                  class="form-control"
-                  v-model.trim="prestamo.nombre"
-                  required
-                />
+                <input type="text" placeholder="Nombre usuario" class="form-control" v-model.trim="prestamo.nombre"
+                  required disabled />
                 <p class="margeninput">Apellidos</p>
-                <input
-                  type="text"
-                  placeholder="Apellidos del usuario"
-                  class="form-control"
-                  v-model.trim="prestamo.apellidos"
-                  required
-                />
+                <input type="text" placeholder="Apellidos del usuario" class="form-control"
+                  v-model.trim="prestamo.apellidos" required disabled />
                 <p class="margeninput">Fecha de alta (Fecha actual)</p>
-                <Calendar
-                  v-model.trim="prestamo.fechaInicio"
-                  dateFormat="dd/MM/yy"
-                  @focusout="cambiarFechaAlta($event)"
-                >
+                <Calendar v-model.trim="prestamo.fechaInicio" dateFormat="dd/MM/yy" @focusout="cambiarFechaAlta($event)">
                 </Calendar>
                 <p class="margeninput">
                   Fecha finalización préstamo (Escrito +7 días | Audiovisual +3
                   días)
                 </p>
-                <Calendar
-                  class="disabled"
-                  v-model.trim="prestamo.fechaFin"
-                  dateFormat="dd/MM/yy"
-                ></Calendar>
+                <Calendar class="disabled" v-model.trim="prestamo.fechaFin" dateFormat="dd/MM/yy"></Calendar>
                 <div class="my-2">
                   <p class="margeninput">Devolución del documento:<br /></p>
                   <div class="form-radio form-radio-inline">
-                    <input
-                      :disabled="noPermitirDevolver"
-                      type="checkbox"
-                      class="form-check-input"
-                      id="check-1"
-                      v-model="prestamo.devuelto"
-                      value="true"
-                    />
-                    <label for="check-1" class="form-check-label"
-                      >Devolver prestamo</label
-                    >
+                    <input :disabled="noPermitirDevolver" type="checkbox" class="form-check-input" id="check-1"
+                      v-model="prestamo.devuelto" value="true" />
+                    <label for="check-1" class="form-check-label">Devolver prestamo</label>
                   </div>
                 </div>
                 <div>
                   <div class="button-container">
                     <br />
-                    <button
-                      :disabled="bloquear"
-                      type="button"
-                      class="btn btn-success"
-                      @click="fGuardarPrestamo(prestamo)"
-                    >
+                    <button type="button" class="btn btn-success" @click="fGuardarPrestamo(prestamo)">
                       Confirmar reserva
                     </button>
+                  </div>
+                  <div>
+                    <p v-if="mensajeError.length != 0">Revise los siguientes errores:</p>
+                    <p  class="error" v-for="error in mensajeError">{{ error }}</p>
                   </div>
                 </div>
               </div>
@@ -290,10 +280,7 @@ export default {
                   Localice el Documento a añadir por su título y seleccione
                   reservar para añadir campos
                 </p>
-                <DocumentoPrestamo
-                  ref="documntoPrestamoRef"            
-                  @editarPrestamo="editarPrestamo"
-                >
+                <DocumentoPrestamo ref="documntoPrestamoRef" @editarPrestamo="editarPrestamo">
                 </DocumentoPrestamo>
               </div>
             </div>
@@ -310,4 +297,8 @@ export default {
   </div>
 </template>
 
-<style></style>
+<style scoped>
+.error {
+  color: red;
+}
+</style>
